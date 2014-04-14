@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CommandGeneratorWPF/CommandGeneratorWPF_TemporaryKey.pfx
+/CommandGeneratorWPF/CommandGeneratorWPF.csproj.user
+/CommandGeneratorWPF/App.config
+/CommandGeneratorWPF/obj/Debug
+/CommandGeneratorWPF/bin/Debug
+/Publish

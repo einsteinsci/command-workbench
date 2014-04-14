@@ -1,0 +1,793 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5B0E9691-248B-4934-B723-B9AEA8821814}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CommandGeneratorWPF</RootNamespace>
+    <AssemblyName>CommandGeneratorWPF</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Users\Cohorts\SkyDrive\Projects\CommandGeneratorWPF\Publish\0.7.6.31\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ProductName>Command Workbench</ProductName>
+    <PublisherName>einsteinsci</PublisherName>
+    <SuiteName>Measure Twice Tools</SuiteName>
+    <ApplicationRevision>32</ApplicationRevision>
+    <ApplicationVersion>0.7.6.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>CommandGeneratorWPF.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>DF279953D7EA652D5CFFC68EAF07CF28F86F36B5</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>CommandGeneratorWPF_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ItemCreationWindow.xaml.cs">
+      <DependentUpon>ItemCreationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NBT\Block.cs" />
+    <Compile Include="NBT\ItemFullTag.cs" />
+    <Compile Include="NBT\TextRunTag.cs" />
+    <Compile Include="SelectorWindow.xaml.cs">
+      <DependentUpon>SelectorWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="ItemCreationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ItemSelectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ItemSelectWindow.xaml.cs">
+      <DependentUpon>ItemSelectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="SelectorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NBT\Extras.cs" />
+    <Compile Include="NBT\IJsonable.cs" />
+    <Compile Include="NBT\InventoryItem.Blocks.cs" />
+    <Compile Include="NBT\InventoryItem.cs" />
+    <Compile Include="NBT\InventoryItem.Items.cs" />
+    <Compile Include="NBT\InventoryItem.Lists.cs" />
+    <Compile Include="NBT\ItemTagTag.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="CommandGeneratorWPF_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\iconLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\items\apple.png" />
+    <Resource Include="assets\items\apple_golden.png" />
+    <Resource Include="assets\items\arrow.png" />
+    <Resource Include="assets\items\bed.png" />
+    <Resource Include="assets\items\beef_cooked.png" />
+    <Resource Include="assets\items\beef_raw.png" />
+    <Resource Include="assets\items\blaze_powder.png" />
+    <Resource Include="assets\items\blaze_rod.png" />
+    <Resource Include="assets\items\boat.png" />
+    <Resource Include="assets\items\bone.png" />
+    <Resource Include="assets\items\book_enchanted.png" />
+    <Resource Include="assets\items\book_normal.png" />
+    <Resource Include="assets\items\book_writable.png" />
+    <Resource Include="assets\items\book_written.png" />
+    <Resource Include="assets\items\bowl.png" />
+    <Resource Include="assets\items\bow_standby.png" />
+    <Resource Include="assets\items\bread.png" />
+    <Resource Include="assets\items\brewing_stand.png" />
+    <Resource Include="assets\items\brick.png" />
+    <Resource Include="assets\items\bucket_empty.png" />
+    <Resource Include="assets\items\bucket_lava.png" />
+    <Resource Include="assets\items\bucket_milk.png" />
+    <Resource Include="assets\items\bucket_water.png" />
+    <Resource Include="assets\items\cake.png" />
+    <Resource Include="assets\items\carrot.png" />
+    <Resource Include="assets\items\carrot_golden.png" />
+    <Resource Include="assets\items\carrot_on_a_stick.png" />
+    <Resource Include="assets\items\cauldron.png" />
+    <Resource Include="assets\items\chainmail_boots.png" />
+    <Resource Include="assets\items\chainmail_chestplate.png" />
+    <Resource Include="assets\items\chainmail_helmet.png" />
+    <Resource Include="assets\items\chainmail_leggings.png" />
+    <Resource Include="assets\items\charcoal.png" />
+    <Resource Include="assets\items\chicken_cooked.png" />
+    <Resource Include="assets\items\chicken_raw.png" />
+    <Resource Include="assets\items\clay_ball.png" />
+    <Resource Include="assets\items\clock.png" />
+    <Resource Include="assets\items\coal.png" />
+    <Resource Include="assets\items\comparator.png" />
+    <Resource Include="assets\items\compass.png" />
+    <Resource Include="assets\items\cookie.png" />
+    <Resource Include="assets\items\diamond.png" />
+    <Resource Include="assets\items\diamond_axe.png" />
+    <Resource Include="assets\items\diamond_boots.png" />
+    <Resource Include="assets\items\diamond_chestplate.png" />
+    <Resource Include="assets\items\diamond_helmet.png" />
+    <Resource Include="assets\items\diamond_hoe.png" />
+    <Resource Include="assets\items\diamond_horse_armor.png" />
+    <Resource Include="assets\items\diamond_leggings.png" />
+    <Resource Include="assets\items\diamond_pickaxe.png" />
+    <Resource Include="assets\items\diamond_shovel.png" />
+    <Resource Include="assets\items\diamond_sword.png" />
+    <Resource Include="assets\items\door_iron.png" />
+    <Resource Include="assets\items\door_wood.png" />
+    <Resource Include="assets\items\dye_powder_black.png" />
+    <Resource Include="assets\items\dye_powder_blue.png" />
+    <Resource Include="assets\items\dye_powder_brown.png" />
+    <Resource Include="assets\items\dye_powder_cyan.png" />
+    <Resource Include="assets\items\dye_powder_gray.png" />
+    <Resource Include="assets\items\dye_powder_green.png" />
+    <Resource Include="assets\items\dye_powder_light_blue.png" />
+    <Resource Include="assets\items\dye_powder_lime.png" />
+    <Resource Include="assets\items\dye_powder_magenta.png" />
+    <Resource Include="assets\items\dye_powder_orange.png" />
+    <Resource Include="assets\items\dye_powder_pink.png" />
+    <Resource Include="assets\items\dye_powder_purple.png" />
+    <Resource Include="assets\items\dye_powder_red.png" />
+    <Resource Include="assets\items\dye_powder_silver.png" />
+    <Resource Include="assets\items\dye_powder_white.png" />
+    <Resource Include="assets\items\dye_powder_yellow.png" />
+    <Resource Include="assets\items\egg.png" />
+    <Resource Include="assets\items\emerald.png" />
+    <Resource Include="assets\items\empty_armor_slot_boots.png" />
+    <Resource Include="assets\items\empty_armor_slot_chestplate.png" />
+    <Resource Include="assets\items\empty_armor_slot_helmet.png" />
+    <Resource Include="assets\items\empty_armor_slot_leggings.png" />
+    <Resource Include="assets\items\ender_eye.png" />
+    <Resource Include="assets\items\ender_pearl.png" />
+    <Resource Include="assets\items\experience_bottle.png" />
+    <Resource Include="assets\items\feather.png" />
+    <Resource Include="assets\items\fireball.png" />
+    <Resource Include="assets\items\fireworks.png" />
+    <Resource Include="assets\items\fireworks_charge.png" />
+    <Resource Include="assets\items\fireworks_charge_overlay.png" />
+    <Resource Include="assets\items\fishing_rod_cast.png" />
+    <Resource Include="assets\items\fishing_rod_uncast.png" />
+    <Resource Include="assets\items\fish_clownfish_raw.png" />
+    <Resource Include="assets\items\fish_cod_cooked.png" />
+    <Resource Include="assets\items\fish_cod_raw.png" />
+    <Resource Include="assets\items\fish_pufferfish_raw.png" />
+    <Resource Include="assets\items\fish_salmon_cooked.png" />
+    <Resource Include="assets\items\fish_salmon_raw.png" />
+    <Resource Include="assets\items\flint.png" />
+    <Resource Include="assets\items\flint_and_steel.png" />
+    <Resource Include="assets\items\flower_pot.png" />
+    <Resource Include="assets\items\ghast_tear.png" />
+    <Resource Include="assets\items\glowstone_dust.png" />
+    <Resource Include="assets\items\gold_axe.png" />
+    <Resource Include="assets\items\gold_boots.png" />
+    <Resource Include="assets\items\gold_chestplate.png" />
+    <Resource Include="assets\items\gold_helmet.png" />
+    <Resource Include="assets\items\gold_hoe.png" />
+    <Resource Include="assets\items\gold_horse_armor.png" />
+    <Resource Include="assets\items\gold_ingot.png" />
+    <Resource Include="assets\items\gold_leggings.png" />
+    <Resource Include="assets\items\gold_nugget.png" />
+    <Resource Include="assets\items\gold_pickaxe.png" />
+    <Resource Include="assets\items\gold_shovel.png" />
+    <Resource Include="assets\items\gold_sword.png" />
+    <Resource Include="assets\items\gunpowder.png" />
+    <Resource Include="assets\items\hopper.png" />
+    <Resource Include="assets\items\iron_axe.png" />
+    <Resource Include="assets\items\iron_boots.png" />
+    <Resource Include="assets\items\iron_chestplate.png" />
+    <Resource Include="assets\items\iron_helmet.png" />
+    <Resource Include="assets\items\iron_hoe.png" />
+    <Resource Include="assets\items\iron_horse_armor.png" />
+    <Resource Include="assets\items\iron_ingot.png" />
+    <Resource Include="assets\items\iron_leggings.png" />
+    <Resource Include="assets\items\iron_pickaxe.png" />
+    <Resource Include="assets\items\iron_shovel.png" />
+    <Resource Include="assets\items\iron_sword.png" />
+    <Resource Include="assets\items\item_frame.png" />
+    <Resource Include="assets\items\lead.png" />
+    <Resource Include="assets\items\leather.png" />
+    <Resource Include="assets\items\leather_boots.png" />
+    <Resource Include="assets\items\leather_boots_overlay.png" />
+    <Resource Include="assets\items\leather_chestplate.png" />
+    <Resource Include="assets\items\leather_chestplate_overlay.png" />
+    <Resource Include="assets\items\leather_helmet.png" />
+    <Resource Include="assets\items\leather_helmet_overlay.png" />
+    <Resource Include="assets\items\leather_leggings.png" />
+    <Resource Include="assets\items\leather_leggings_overlay.png" />
+    <Resource Include="assets\items\magma_cream.png" />
+    <Resource Include="assets\items\map_empty.png" />
+    <Resource Include="assets\items\map_filled.png" />
+    <Resource Include="assets\items\melon.png" />
+    <Resource Include="assets\items\melon_speckled.png" />
+    <Resource Include="assets\items\minecart_chest.png" />
+    <Resource Include="assets\items\minecart_command_block.png" />
+    <Resource Include="assets\items\minecart_furnace.png" />
+    <Resource Include="assets\items\minecart_hopper.png" />
+    <Resource Include="assets\items\minecart_normal.png" />
+    <Resource Include="assets\items\minecart_tnt.png" />
+    <Resource Include="assets\items\mushroom_stew.png" />
+    <Resource Include="assets\items\name_tag.png" />
+    <Resource Include="assets\items\netherbrick.png" />
+    <Resource Include="assets\items\nether_star.png" />
+    <Resource Include="assets\items\nether_wart.png" />
+    <Resource Include="assets\items\painting.png" />
+    <Resource Include="assets\items\paper.png" />
+    <Resource Include="assets\items\porkchop_cooked.png" />
+    <Resource Include="assets\items\porkchop_raw.png" />
+    <Resource Include="assets\items\potato.png" />
+    <Resource Include="assets\items\potato_baked.png" />
+    <Resource Include="assets\items\potato_poisonous.png" />
+    <Resource Include="assets\items\potion_bottle_drinkable.png" />
+    <Resource Include="assets\items\potion_bottle_empty.png" />
+    <Resource Include="assets\items\potion_bottle_splash.png" />
+    <Resource Include="assets\items\potion_overlay.png" />
+    <Resource Include="assets\items\pumpkin_pie.png" />
+    <Resource Include="assets\items\quartz.png" />
+    <Resource Include="assets\items\quiver.png" />
+    <Resource Include="assets\items\record_11.png" />
+    <Resource Include="assets\items\record_13.png" />
+    <Resource Include="assets\items\record_blocks.png" />
+    <Resource Include="assets\items\record_cat.png" />
+    <Resource Include="assets\items\record_chirp.png" />
+    <Resource Include="assets\items\record_far.png" />
+    <Resource Include="assets\items\record_mall.png" />
+    <Resource Include="assets\items\record_mellohi.png" />
+    <Resource Include="assets\items\record_stal.png" />
+    <Resource Include="assets\items\record_strad.png" />
+    <Resource Include="assets\items\record_wait.png" />
+    <Resource Include="assets\items\record_ward.png" />
+    <Resource Include="assets\items\redstone_dust.png" />
+    <Resource Include="assets\items\reeds.png" />
+    <Resource Include="assets\items\repeater.png" />
+    <Resource Include="assets\items\rotten_flesh.png" />
+    <Resource Include="assets\items\ruby.png" />
+    <Resource Include="assets\items\saddle.png" />
+    <Resource Include="assets\items\seeds_melon.png" />
+    <Resource Include="assets\items\seeds_pumpkin.png" />
+    <Resource Include="assets\items\seeds_wheat.png" />
+    <Resource Include="assets\items\shears.png" />
+    <Resource Include="assets\items\sign.png" />
+    <Resource Include="assets\items\skull_creeper.png" />
+    <Resource Include="assets\items\skull_skeleton.png" />
+    <Resource Include="assets\items\skull_steve.png" />
+    <Resource Include="assets\items\skull_wither.png" />
+    <Resource Include="assets\items\skull_zombie.png" />
+    <Resource Include="assets\items\slimeball.png" />
+    <Resource Include="assets\items\snowball.png" />
+    <Resource Include="assets\items\spawn_egg.png" />
+    <Resource Include="assets\items\spawn_egg_overlay.png" />
+    <Resource Include="assets\items\spider_eye.png" />
+    <Resource Include="assets\items\spider_eye_fermented.png" />
+    <Resource Include="assets\items\stick.png" />
+    <Resource Include="assets\items\stone_axe.png" />
+    <Resource Include="assets\items\stone_hoe.png" />
+    <Resource Include="assets\items\stone_pickaxe.png" />
+    <Resource Include="assets\items\stone_shovel.png" />
+    <Resource Include="assets\items\stone_sword.png" />
+    <Resource Include="assets\items\string.png" />
+    <Resource Include="assets\items\sugar.png" />
+    <Resource Include="assets\items\wheat.png" />
+    <Resource Include="assets\items\wood_axe.png" />
+    <Resource Include="assets\items\wood_hoe.png" />
+    <Resource Include="assets\items\wood_pickaxe.png" />
+    <Resource Include="assets\items\wood_shovel.png" />
+    <Resource Include="assets\items\wood_sword.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\blocks\Grid_Acacia_Leaves.png" />
+    <Resource Include="assets\blocks\Grid_Acacia_Sapling.png" />
+    <Resource Include="assets\blocks\Grid_Acacia_Wood.png" />
+    <Resource Include="assets\blocks\Grid_Acacia_Wood_Planks.png" />
+    <Resource Include="assets\blocks\Grid_Acacia_Wood_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Acacia_Wood_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Activator_Rail.png" />
+    <Resource Include="assets\blocks\Grid_Allium.png" />
+    <Resource Include="assets\blocks\Grid_Anvil.png" />
+    <Resource Include="assets\blocks\Grid_Azure_Bluet.png" />
+    <Resource Include="assets\blocks\Grid_Barrier.png" />
+    <Resource Include="assets\blocks\Grid_Beacon.png" />
+    <Resource Include="assets\blocks\Grid_Bedrock.png" />
+    <Resource Include="assets\blocks\Grid_Birch_Leaves.png" />
+    <Resource Include="assets\blocks\Grid_Birch_Sapling.png" />
+    <Resource Include="assets\blocks\Grid_Birch_Wood.png" />
+    <Resource Include="assets\blocks\Grid_Birch_Wood_Planks.png" />
+    <Resource Include="assets\blocks\Grid_Birch_Wood_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Birch_Wood_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Black_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Black_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Black_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Black_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Black_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Block_of_Coal.png" />
+    <Resource Include="assets\blocks\Grid_Block_of_Diamond.png" />
+    <Resource Include="assets\blocks\Grid_Block_of_Emerald.png" />
+    <Resource Include="assets\blocks\Grid_Block_of_Gold.png" />
+    <Resource Include="assets\blocks\Grid_Block_of_Iron.png" />
+    <Resource Include="assets\blocks\Grid_Block_of_Quartz.png" />
+    <Resource Include="assets\blocks\Grid_Block_of_Redstone.png" />
+    <Resource Include="assets\blocks\Grid_Blue_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Blue_Orchid.png" />
+    <Resource Include="assets\blocks\Grid_Blue_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Blue_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Blue_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Blue_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Bookshelf.png" />
+    <Resource Include="assets\blocks\Grid_Bricks.png" />
+    <Resource Include="assets\blocks\Grid_Bricks_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Brick_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Brown_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Brown_Mushroom.png" />
+    <Resource Include="assets\blocks\Grid_Brown_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Brown_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Brown_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Brown_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Cactus.png" />
+    <Resource Include="assets\blocks\Grid_Chest.png" />
+    <Resource Include="assets\blocks\Grid_Chiseled_Quartz_Block.png" />
+    <Resource Include="assets\blocks\Grid_Chiseled_Sandstone.png" />
+    <Resource Include="assets\blocks\Grid_Chiseled_Stone_Bricks.png" />
+    <Resource Include="assets\blocks\Grid_Clay_%28block%29.png" />
+    <Resource Include="assets\blocks\Grid_Coal_Ore.png" />
+    <Resource Include="assets\blocks\Grid_Cobblestone.png" />
+    <Resource Include="assets\blocks\Grid_Cobblestone_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Cobblestone_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Cobblestone_Wall.png" />
+    <Resource Include="assets\blocks\Grid_Cobweb.png" />
+    <Resource Include="assets\blocks\Grid_Command_Block.png" />
+    <Resource Include="assets\blocks\Grid_Cracked_Stone_Bricks.png" />
+    <Resource Include="assets\blocks\Grid_Crafting_Table.png" />
+    <Resource Include="assets\blocks\Grid_Cyan_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Cyan_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Cyan_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Cyan_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Cyan_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Dandelion.png" />
+    <Resource Include="assets\blocks\Grid_Dark_Oak_Leaves.png" />
+    <Resource Include="assets\blocks\Grid_Dark_Oak_Sapling.png" />
+    <Resource Include="assets\blocks\Grid_Dark_Oak_Wood.png" />
+    <Resource Include="assets\blocks\Grid_Dark_Oak_Wood_Planks.png" />
+    <Resource Include="assets\blocks\Grid_Dark_Oak_Wood_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Dark_Oak_Wood_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Daylight_Sensor.png" />
+    <Resource Include="assets\blocks\Grid_Detector_Rail.png" />
+    <Resource Include="assets\blocks\Grid_Diamond_Ore.png" />
+    <Resource Include="assets\blocks\Grid_Dirt.png" />
+    <Resource Include="assets\blocks\Grid_Dispenser.png" />
+    <Resource Include="assets\blocks\Grid_Dragon_Egg.png" />
+    <Resource Include="assets\blocks\Grid_Dropper.png" />
+    <Resource Include="assets\blocks\Grid_Emerald_Ore.png" />
+    <Resource Include="assets\blocks\Grid_Enchantment_Table.png" />
+    <Resource Include="assets\blocks\Grid_Ender_Chest.png" />
+    <Resource Include="assets\blocks\Grid_End_Portal_%28block%29.png" />
+    <Resource Include="assets\blocks\Grid_End_Stone.png" />
+    <Resource Include="assets\blocks\Grid_Farmland.png" />
+    <Resource Include="assets\blocks\Grid_Fence.png" />
+    <Resource Include="assets\blocks\Grid_Fence_Gate.png" />
+    <Resource Include="assets\blocks\Grid_Fire.gif" />
+    <Resource Include="assets\blocks\Grid_Furnace.png" />
+    <Resource Include="assets\blocks\Grid_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Glowstone.png" />
+    <Resource Include="assets\blocks\Grid_Gold_Ore.png" />
+    <Resource Include="assets\blocks\Grid_Grass.png" />
+    <Resource Include="assets\blocks\Grid_Grass_Block.png" />
+    <Resource Include="assets\blocks\Grid_Gravel.png" />
+    <Resource Include="assets\blocks\Grid_Gray_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Gray_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Gray_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Gray_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Gray_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Green_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Green_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Green_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Green_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Green_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Hardened_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Hay_Bale.png" />
+    <Resource Include="assets\blocks\Grid_Hopper.png" />
+    <Resource Include="assets\blocks\Grid_Ice.png" />
+    <Resource Include="assets\blocks\Grid_Iron_Bars.png" />
+    <Resource Include="assets\blocks\Grid_Iron_Ore.png" />
+    <Resource Include="assets\blocks\Grid_Iron_Trapdoor.png" />
+    <Resource Include="assets\blocks\Grid_Jack_o%27Lantern.png" />
+    <Resource Include="assets\blocks\Grid_Jukebox.png" />
+    <Resource Include="assets\blocks\Grid_Jungle_Leaves.png" />
+    <Resource Include="assets\blocks\Grid_Jungle_Sapling.png" />
+    <Resource Include="assets\blocks\Grid_Jungle_Wood.png" />
+    <Resource Include="assets\blocks\Grid_Jungle_Wood_Planks.png" />
+    <Resource Include="assets\blocks\Grid_Jungle_Wood_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Jungle_Wood_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Ladder.png" />
+    <Resource Include="assets\blocks\Grid_Lapis_Lazuli_Block.png" />
+    <Resource Include="assets\blocks\Grid_Lapis_Lazuli_Ore.png" />
+    <Resource Include="assets\blocks\Grid_Lever.png" />
+    <Resource Include="assets\blocks\Grid_Light_Blue_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Light_Blue_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Light_Blue_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Light_Blue_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Light_Blue_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Light_Gray_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Light_Gray_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Light_Gray_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Light_Gray_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Light_Gray_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Lilac.png" />
+    <Resource Include="assets\blocks\Grid_Lily_Pad.png" />
+    <Resource Include="assets\blocks\Grid_Lime_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Lime_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Lime_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Lime_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Lime_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Magenta_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Magenta_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Magenta_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Magenta_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Magenta_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Melon_%28block%29.png" />
+    <Resource Include="assets\blocks\Grid_Monster_Spawner.png" />
+    <Resource Include="assets\blocks\Grid_Mossy_Cobblestone_Wall.png" />
+    <Resource Include="assets\blocks\Grid_Mossy_Stone_Bricks.png" />
+    <Resource Include="assets\blocks\Grid_Moss_Stone.png" />
+    <Resource Include="assets\blocks\Grid_Mycelium.png" />
+    <Resource Include="assets\blocks\Grid_Netherrack.png" />
+    <Resource Include="assets\blocks\Grid_Nether_Brick.png" />
+    <Resource Include="assets\blocks\Grid_Nether_Brick_Fence.png" />
+    <Resource Include="assets\blocks\Grid_Nether_Brick_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Nether_Brick_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Nether_Quartz_Ore.png" />
+    <Resource Include="assets\blocks\Grid_Note_Block.png" />
+    <Resource Include="assets\blocks\Grid_Oak_Leaves.png" />
+    <Resource Include="assets\blocks\Grid_Oak_Wood.png" />
+    <Resource Include="assets\blocks\Grid_Oak_Wood_Planks.png" />
+    <Resource Include="assets\blocks\Grid_Oak_Wood_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Oak_Wood_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Obsidian.png" />
+    <Resource Include="assets\blocks\Grid_Orange_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Orange_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Orange_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Orange_Tulip.png" />
+    <Resource Include="assets\blocks\Grid_Orange_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Oxeye_Daisy.png" />
+    <Resource Include="assets\blocks\Grid_Packed_Ice.png" />
+    <Resource Include="assets\blocks\Grid_Peony.png" />
+    <Resource Include="assets\blocks\Grid_Pillar_Quartz_Block.png" />
+    <Resource Include="assets\blocks\Grid_Pink_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Pink_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Pink_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Pink_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Pink_Tulip.png" />
+    <Resource Include="assets\blocks\Grid_Pink_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Piston.png" />
+    <Resource Include="assets\blocks\Grid_Podzol.png" />
+    <Resource Include="assets\blocks\Grid_Poppy.png" />
+    <Resource Include="assets\blocks\Grid_Powered_Rail.png" />
+    <Resource Include="assets\blocks\Grid_Pumpkin.png" />
+    <Resource Include="assets\blocks\Grid_Purple_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Purple_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Purple_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Purple_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Purple_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Quartz_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Quartz_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Rail.png" />
+    <Resource Include="assets\blocks\Grid_Redstone_Lamp.png" />
+    <Resource Include="assets\blocks\Grid_Redstone_Ore.png" />
+    <Resource Include="assets\blocks\Grid_Redstone_Torch.png" />
+    <Resource Include="assets\blocks\Grid_Red_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Red_Mushroom.png" />
+    <Resource Include="assets\blocks\Grid_Red_Sand.png" />
+    <Resource Include="assets\blocks\Grid_Red_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Red_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Red_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Red_Tulip.png" />
+    <Resource Include="assets\blocks\Grid_Red_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Rose_Bush.png" />
+    <Resource Include="assets\blocks\Grid_Sand.png" />
+    <Resource Include="assets\blocks\Grid_Sandstone.png" />
+    <Resource Include="assets\blocks\Grid_Sandstone_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Sandstone_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Shrub.png" />
+    <Resource Include="assets\blocks\Grid_Slime_Block.png" />
+    <Resource Include="assets\blocks\Grid_Smooth_Sandstone.png" />
+    <Resource Include="assets\blocks\Grid_Snow.png" />
+    <Resource Include="assets\blocks\Grid_Snow_%28cover%29.png" />
+    <Resource Include="assets\blocks\Grid_Soul_Sand.png" />
+    <Resource Include="assets\blocks\Grid_Sponge.png" />
+    <Resource Include="assets\blocks\Grid_Spruce_Leaves.png" />
+    <Resource Include="assets\blocks\Grid_Spruce_Sapling.png" />
+    <Resource Include="assets\blocks\Grid_Spruce_Wood.png" />
+    <Resource Include="assets\blocks\Grid_Spruce_Wood_Planks.png" />
+    <Resource Include="assets\blocks\Grid_Spruce_Wood_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Spruce_Wood_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Sticky_Piston.png" />
+    <Resource Include="assets\blocks\Grid_Stone.png" />
+    <Resource Include="assets\blocks\Grid_Stone_Bricks.png" />
+    <Resource Include="assets\blocks\Grid_Stone_Bricks_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Stone_Brick_Stairs.png" />
+    <Resource Include="assets\blocks\Grid_Stone_Button.png" />
+    <Resource Include="assets\blocks\Grid_Stone_Pressure_Plate.png" />
+    <Resource Include="assets\blocks\Grid_Stone_Slab.png" />
+    <Resource Include="assets\blocks\Grid_Sunflower.png" />
+    <Resource Include="assets\blocks\Grid_TNT.png" />
+    <Resource Include="assets\blocks\Grid_Torch.png" />
+    <Resource Include="assets\blocks\Grid_Trapdoor.png" />
+    <Resource Include="assets\blocks\Grid_Trapped_Chest.png" />
+    <Resource Include="assets\blocks\Grid_Tripwire_Hook.png" />
+    <Resource Include="assets\blocks\Grid_Vines.png" />
+    <Resource Include="assets\blocks\Grid_Weighted_Pressure_Plate_%28Heavy%29.png" />
+    <Resource Include="assets\blocks\Grid_Weighted_Pressure_Plate_%28Light%29.png" />
+    <Resource Include="assets\blocks\Grid_White_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_White_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_White_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_White_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_White_Tulip.png" />
+    <Resource Include="assets\blocks\Grid_White_Wool.png" />
+    <Resource Include="assets\blocks\Grid_Wooden_Button.png" />
+    <Resource Include="assets\blocks\Grid_Wooden_Pressure_Plate.png" />
+    <Resource Include="assets\blocks\Grid_Yellow_Carpet.png" />
+    <Resource Include="assets\blocks\Grid_Yellow_Stained_Clay.png" />
+    <Resource Include="assets\blocks\Grid_Yellow_Stained_Glass.png" />
+    <Resource Include="assets\blocks\Grid_Yellow_Stained_Glass_Pane.png" />
+    <Resource Include="assets\blocks\Grid_Yellow_Wool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\blocks\technical\150px-Huge_Brown_Mushroom.png" />
+    <Resource Include="assets\blocks\technical\150px-Huge_Red_Mushroom.png" />
+    <Resource Include="assets\blocks\technical\Bed.png" />
+    <Resource Include="assets\blocks\technical\Block_34.png" />
+    <Resource Include="assets\blocks\technical\Brewing_Stand.png" />
+    <Resource Include="assets\blocks\technical\Cake.png" />
+    <Resource Include="assets\blocks\technical\Carrot-animated.gif" />
+    <Resource Include="assets\blocks\technical\Cauldron.png" />
+    <Resource Include="assets\blocks\technical\Cocoa_Plant.gif" />
+    <Resource Include="assets\blocks\technical\Creeper_Head.png" />
+    <Resource Include="assets\blocks\technical\Double_Stone_Slab.png" />
+    <Resource Include="assets\blocks\technical\End_Portal.png" />
+    <Resource Include="assets\blocks\technical\Flower_Pot.png" />
+    <Resource Include="assets\blocks\technical\Furnace_%28Active%29.png" />
+    <Resource Include="assets\blocks\technical\Grid_Farmland.png" />
+    <Resource Include="assets\blocks\technical\Grid_Fire.gif" />
+    <Resource Include="assets\blocks\technical\Grid_Huge_Brown_Mushroom.png" />
+    <Resource Include="assets\blocks\technical\Grid_Huge_Red_Mushroom.png" />
+    <Resource Include="assets\blocks\technical\Grid_Lava.png" />
+    <Resource Include="assets\blocks\technical\Grid_Redstone_Ore.png" />
+    <Resource Include="assets\blocks\technical\Grid_Water.png" />
+    <Resource Include="assets\blocks\technical\Head.png" />
+    <Resource Include="assets\blocks\technical\Hopper.png" />
+    <Resource Include="assets\blocks\technical\Iron_Door.png" />
+    <Resource Include="assets\blocks\technical\Nether_Wart.gif" />
+    <Resource Include="assets\blocks\technical\Portal.png" />
+    <Resource Include="assets\blocks\technical\Potato-animated.gif" />
+    <Resource Include="assets\blocks\technical\Redstone_%28Repeater,_Active%29.gif" />
+    <Resource Include="assets\blocks\technical\Redstone_%28Repeater,_Inactive%29.gif" />
+    <Resource Include="assets\blocks\technical\Redstone_%28Torch,_Inactive%29.png" />
+    <Resource Include="assets\blocks\technical\Redstone_%28Wire,Inventory%29.png" />
+    <Resource Include="assets\blocks\technical\Redstone_Comparator_%28Active%29.gif" />
+    <Resource Include="assets\blocks\technical\Redstone_Comparator_%28Inactive%29.gif" />
+    <Resource Include="assets\blocks\technical\Redstone_Lamp_%28Active%29.png" />
+    <Resource Include="assets\blocks\technical\Seed_Stem_Grown.png" />
+    <Resource Include="assets\blocks\technical\Sign.png" />
+    <Resource Include="assets\blocks\technical\Skeleton_Skull.png" />
+    <Resource Include="assets\blocks\technical\Sugar_Canes.png" />
+    <Resource Include="assets\blocks\technical\Tripwire.png" />
+    <Resource Include="assets\blocks\technical\Wall_Sign.png" />
+    <Resource Include="assets\blocks\technical\Wheat.gif" />
+    <Resource Include="assets\blocks\technical\Wither_Skeleton_Skull.png" />
+    <Resource Include="assets\blocks\technical\Wooden_Door.png" />
+    <Resource Include="assets\blocks\technical\Zombie_Head.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\blocks\Grid_Dead_Bush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\blocks\Grid_Oak_Sapling.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\blocks\Grid_Orange_Stained_Glass_Pane.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\blocks\Grid_Double_Tallgrass.png" />
+    <Resource Include="assets\blocks\Grid_Large_Fern.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\blocks\technical\Grid_Acacia_Wood_Planks.png" />
+    <Resource Include="assets\blocks\technical\Grid_Birch_Wood_Planks.png" />
+    <Resource Include="assets\blocks\technical\Grid_Block_of_Quartz.png" />
+    <Resource Include="assets\blocks\technical\Grid_Bricks.png" />
+    <Resource Include="assets\blocks\technical\Grid_Cobblestone.png" />
+    <Resource Include="assets\blocks\technical\Grid_Dark_Oak_Wood_Planks.png" />
+    <Resource Include="assets\blocks\technical\Grid_Jungle_Wood_Planks.png" />
+    <Resource Include="assets\blocks\technical\Grid_Oak_Wood_Planks.png" />
+    <Resource Include="assets\blocks\technical\Grid_Sandstone.png" />
+    <Resource Include="assets\blocks\technical\Grid_Spruce_Wood_Planks.png" />
+    <Resource Include="assets\blocks\technical\Grid_Stone_Bricks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\blocks\technical\Grid_Nether_Brick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\items\potion_bottle_water.png" />
+    <Resource Include="assets\items\spawn_egg_combined.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\Command_Block.png" />
+    <Resource Include="assets\error.png" />
+    <Resource Include="assets\Grid_Command_Block.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\ui\bold.png" />
+    <Resource Include="assets\ui\italic.png" />
+    <Resource Include="assets\ui\obfuscated.png" />
+    <Resource Include="assets\ui\strikethrough.png" />
+    <Resource Include="assets\ui\underline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\ui\doc_array.png" />
+    <Resource Include="assets\ui\doc_byte.png" />
+    <Resource Include="assets\ui\doc_compound.png" />
+    <Resource Include="assets\ui\doc_float.png" />
+    <Resource Include="assets\ui\doc_int.png" />
+    <Resource Include="assets\ui\doc_list.png" />
+    <Resource Include="assets\ui\doc_short.png" />
+    <Resource Include="assets\ui\doc_string.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

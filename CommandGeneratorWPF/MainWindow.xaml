@@ -1,0 +1,1955 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				xmlns:t="http://schemas.xceed.com/wpf/xaml/toolkit"
+				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				mc:Ignorable="d"
+				x:Class="CommandGeneratorWPF.MainWindow"
+				Title="Command Workbench v0.7.6.28"
+				Icon="assets/iconLarge.png"
+				WindowStartupLocation="CenterScreen"
+				Closed="Window_Closed"
+				MinWidth="750"
+				MinHeight="600"
+				Height="600"
+				Width="850">
+
+	<Grid>
+		<TabControl x:Name="CmdTabs"
+								VerticalAlignment="Stretch"
+								HorizontalAlignment="Stretch"
+								Margin="5"
+								SelectedIndex="1">
+
+			<TabItem Header="/give"
+							 FontSize="12">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="3*" />
+						</Grid.ColumnDefinitions>
+
+						<TreeView x:Name="GiveTree"
+											Padding="2">
+							<TreeViewItem IsSelected="True"
+														IsExpanded="True">
+								<TreeViewItem.Header>
+									<StackPanel Orientation="Horizontal">
+										<Image Source="assets/ui/doc_compound.png" />
+										<TextBlock Text="tag" />
+									</StackPanel>
+								</TreeViewItem.Header>
+							</TreeViewItem>
+						</TreeView>
+						<Grid Grid.Column="1">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+
+							<Grid Tag="TopBar">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+
+								<TextBlock Text="/give"
+													 Margin="10,5,5,10"
+													 VerticalAlignment="Center"
+													 FontSize="18" />
+
+								<TextBox x:Name="PlayerBox"
+												 Text="einsteinsci"
+												 Grid.Column="1"
+												 Margin="5,5,0,5"
+												 FontSize="14"
+												 VerticalAlignment="Center"
+												 Height="23"
+												 Padding="5,0"
+												 TextChanged="PlayerBox_TextChanged" />
+								<Button x:Name="SelectorBtn"
+												Content="@"
+												Grid.Column="2"
+												Margin="-1,5,5,5"
+												FontSize="14"
+												VerticalAlignment="Center"
+												Height="23"
+												Width="24"
+												Click="SelectorBtn_Click" />
+
+								<Button x:Name="SelectItemBtn"
+												Margin="5"
+												Grid.Column="3"
+												Click="SelectItemBtn_Click">
+									<StackPanel Orientation="Horizontal">
+										<Image x:Name="SelectedItemImg"
+													 Height="32"
+													 Width="32"
+													 Margin="5"
+													 Source="{Binding ImageSource}" />
+										<TextBlock x:Name="SelectedItemTxt"
+															 VerticalAlignment="Center"
+															 Margin="10,0"
+															 Text="{Binding ShortName}"
+															 FontSize="14"
+															 MinWidth="32" />
+										<TextBlock x:Name="SelectedItemIdTxt"
+															 VerticalAlignment="Center"
+															 Margin="0,0,10,0"
+															 Text="(1)"
+															 FontSize="14"
+															 Foreground="Gray" />
+
+									</StackPanel>
+								</Button>
+
+								<t:ByteUpDown x:Name="ItemCountUpDown"
+															Value="1"
+															Margin="5"
+															Grid.Column="4"
+															VerticalAlignment="Center"
+															Width="64"
+															VerticalContentAlignment="Center"
+															FontSize="14"
+															Minimum="1"
+															ValueChanged="ItemCountUpDown_ValueChanged" />
+
+								<TextBox x:Name="ItemMetaTxt"
+												 Text="0"
+												 Margin="5,16"
+												 Grid.Column="5"
+												 VerticalAlignment="Center"
+												 Width="64"
+												 TextAlignment="Center"
+												 FontSize="14"
+												 IsReadOnly="True"
+												 ToolTip="Metadata associated with Item"
+												 Height="24"
+												 VerticalContentAlignment="Center"
+												 TextChanged="ItemMetaTxt_TextChanged" />
+								<TextBlock Text="{}{...}"
+													 Margin="5,5,25,5"
+													 Grid.Column="6"
+													 VerticalAlignment="Center"
+													 FontSize="18"
+													 FontFamily="Consolas" />
+							</Grid>
+
+							<TextBlock x:Name="WarningTxt"
+												 Text="Warning: ---"
+												 Grid.Row="1"
+												 Foreground="Red"
+												 Margin="10,0"
+												 Visibility="Hidden" />
+
+							<TabControl Margin="5,10,0,0"
+													Grid.Row="2">
+								<TabItem x:Name="GeneralTab"
+												 Header="General">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+										</Grid.ColumnDefinitions>
+
+										<StackPanel Orientation="Vertical"
+																Margin="5,5,0,5">
+											<CheckBox x:Name="UnbreakableCheck"
+																Content="Unbreakable (tools only)"
+																Margin="5"
+																FontSize="14"
+																FontWeight="SemiBold"
+																VerticalContentAlignment="Center"
+																Checked="UnbreakableCheck_Changed"
+																Unchecked="UnbreakableCheck_Changed" />
+
+											<Grid Margin="0,0,0,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<TextBlock x:Name="GiveDamageTxt"
+																	 Text="Damage:"
+																	 FontSize="14"
+																	 FontWeight="SemiBold"
+																	 Margin="5,0"
+																	 VerticalAlignment="Center" />
+												<t:IntegerUpDown x:Name="GiveDamageUpDown"
+																				 Value="0"
+																				 Grid.Column="1"
+																				 Height="22"
+																				 ValueChanged="GiveDamageUpDown_ValueChanged"
+																				 ParsingNumberStyle="Integer"
+																				 Minimum="0"
+																				 Maximum="50000"
+																				 DisplayDefaultValueOnEmptyText="True"
+																				 DefaultValue="0"
+																				 MouseWheelActiveTrigger="MouseOver" />
+											</Grid>
+
+											<TextBlock Text="Can be used to destroy:"
+																 FontSize="14"
+																 FontWeight="SemiBold"
+																 Margin="5" />
+											<Button x:Name="CanDestroySelectBtn"
+															Click="CanDestroySelectBtn_Click"
+															HorizontalAlignment="Left"
+															Margin="5,0,5,5">
+												<StackPanel Orientation="Horizontal"
+																		Margin="2">
+													<Image Source="{Binding ImageSource}"
+																 Height="32"
+																 Width="32"
+																 Margin="5" />
+													<TextBlock Text="{Binding ShortName}"
+																		 FontSize="14"
+																		 MinWidth="32"
+																		 VerticalAlignment="Center"
+																		 Margin="5,0" />
+													<TextBlock Text="{Binding ParentheticalID}"
+																		 VerticalAlignment="Center"
+																		 Foreground="Gray"
+																		 MinWidth="16"
+																		 Margin="5,0" />
+												</StackPanel>
+											</Button>
+											<Grid Margin="0,0,0,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+
+												<ListBox x:Name="CanDestroyItemsList"
+																 Margin="5,0"
+																 Height="90">
+													<ListBox.ItemTemplate>
+														<DataTemplate>
+															<StackPanel Orientation="Horizontal">
+																<Image Source="{Binding ImageSource}"
+																			 Width="32"
+																			 Height="32" />
+																<TextBlock Text="{Binding ShortName}"
+																					 FontSize="12"
+																					 VerticalAlignment="Center"
+																					 Margin="5" />
+																<TextBlock Text="{Binding ParentheticalID}"
+																					 VerticalAlignment="Center"
+																					 Foreground="Gray"
+																					 Margin="5" />
+															</StackPanel>
+														</DataTemplate>
+													</ListBox.ItemTemplate>
+												</ListBox>
+												<StackPanel Grid.Column="1">
+													<Button x:Name="CanDestroyAddBtn"
+																	Content="Add"
+																	Width="64"
+																	Margin="0,0,5,0"
+																	Click="CanDestroyAddBtn_Click" />
+													<Button x:Name="CanDestroyRemoveBtn"
+																	Content="Remove"
+																	Width="64"
+																	Margin="0,5,5,0"
+																	Click="CanDestroyRemoveBtn_Click" />
+												</StackPanel>
+											</Grid>
+										</StackPanel>
+
+										<StackPanel x:Name="CanPlaceOnPanel"
+																Orientation="Vertical"
+																Margin="5"
+																Grid.Column="1">
+											<Button Tag="BlockEntityTagBtn"
+															Content="Tile Entity Data (coming soon!)"
+															IsEnabled="False"
+															FontSize="12"
+															Margin="5,5,0,0"
+															Padding="1,2" />
+
+											<Label Content="Can only be placed on:"
+														 FontSize="14"
+														 FontWeight="SemiBold"
+														 Margin="5,30,5,5"
+														 Padding="0,0,5,0" />
+											<Button x:Name="CanPlaceOnSelectBtn"
+															Click="CanPlaceOnSelectBtn_Click"
+															HorizontalAlignment="Left"
+															Margin="5,0,5,5">
+												<StackPanel Orientation="Horizontal"
+																		Margin="2">
+													<Image Source="{Binding ImageSource}"
+																 Height="32"
+																 Width="32"
+																 Margin="5" />
+													<TextBlock Text="{Binding ShortName}"
+																		 FontSize="14"
+																		 MinWidth="32"
+																		 VerticalAlignment="Center"
+																		 Margin="5,0" />
+													<TextBlock Text="{Binding ParentheticalID}"
+																		 VerticalAlignment="Center"
+																		 Foreground="Gray"
+																		 MinWidth="16"
+																		 Margin="5,0" />
+												</StackPanel>
+											</Button>
+											<Grid Margin="0,0,0,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+
+												<ListBox x:Name="CanPlaceOnItemsList"
+																 Height="90"
+																 Margin="5,0">
+													<ListBox.ItemTemplate>
+														<DataTemplate>
+															<StackPanel Orientation="Horizontal">
+																<Image Source="{Binding ImageSource}"
+																			 Width="32"
+																			 Height="32" />
+																<TextBlock Text="{Binding ShortName}"
+																					 FontSize="12"
+																					 VerticalAlignment="Center"
+																					 Margin="5" />
+																<TextBlock Text="{Binding ParentheticalID}"
+																					 VerticalAlignment="Center"
+																					 Foreground="Gray"
+																					 Margin="5" />
+															</StackPanel>
+														</DataTemplate>
+													</ListBox.ItemTemplate>
+												</ListBox>
+												<StackPanel Grid.Column="1">
+													<Button x:Name="CanPlaceOnAddBtn"
+																	Content="Add"
+																	Width="64"
+																	Click="CanPlaceOnAddBtn_Click" />
+													<Button x:Name="CanPlaceOnRemoveBtn"
+																	Content="Remove"
+																	Width="64"
+																	Margin="0,5,0,0"
+																	Click="CanPlaceOnRemoveBtn_Click" />
+												</StackPanel>
+											</Grid>
+										</StackPanel>
+									</Grid>
+								</TabItem>
+
+								<TabItem x:Name="DisplayTab"
+												 Header="Display">
+									<ScrollViewer>
+										<Grid Margin="0,5,0,0">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition />
+												<ColumnDefinition Width="Auto" />
+											</Grid.ColumnDefinitions>
+
+											<StackPanel>
+												<Grid Margin="5,5,5,0">
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="Auto" />
+														<ColumnDefinition Width="*" />
+													</Grid.ColumnDefinitions>
+
+													<TextBlock Text="Name:"
+																		 FontSize="12"
+																		 FontWeight="SemiBold"
+																		 Margin="0,0,5,0" />
+													<TextBox x:Name="DisplayNameBox"
+																	 Grid.Column="1"
+																	 FontSize="12"
+																	 TextChanged="DisplayNameBox_TextChanged" />
+												</Grid>
+												<Grid Margin="5">
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="Auto" />
+														<ColumnDefinition Width="*" />
+													</Grid.ColumnDefinitions>
+
+													<TextBlock Text="Lore:"
+																		 FontSize="12"
+																		 FontWeight="SemiBold"
+																		 Margin="0,0,5,0" />
+													<TextBox x:Name="LoreLineBox"
+																	 Grid.Column="1"
+																	 FontSize="12" />
+												</Grid>
+												<Grid>
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition />
+														<ColumnDefinition Width="64" />
+													</Grid.ColumnDefinitions>
+
+													<ListBox x:Name="LoreList"
+																	 FontSize="12"
+																	 Height="100"
+																	 Margin="5,0" />
+													<StackPanel Grid.Column="1"
+																			Margin="0,0,5,0">
+														<Button x:Name="LoreAddBtn"
+																		Content="Add"
+																		Margin="0,0,0,5"
+																		Click="LoreAddBtn_Click" />
+														<Button x:Name="LoreRemoveBtn"
+																		Content="Remove"
+																		Click="LoreRemoveBtn_Click" />
+													</StackPanel>
+												</Grid>
+											</StackPanel>
+
+											<StackPanel Grid.Column="1">
+												<ToggleButton x:Name="EnableCustomColorToggle"
+																			Content="Enable Custom Color"
+																			FontSize="12"
+																			Margin="5,5,5,0"
+																			Padding="2"
+																			Checked="EnableCustomColorToggle_Checked"
+																			Unchecked="EnableCustomColorToggle_Unchecked" />
+												<StackPanel x:Name="CustomColorStack"
+																		IsEnabled="False">
+													<Grid Margin="5">
+														<Grid.ColumnDefinitions>
+															<ColumnDefinition Width="Auto" />
+															<ColumnDefinition Width="*" />
+														</Grid.ColumnDefinitions>
+
+														<Label Content="Leather Armor Color:"
+																	 FontSize="12"
+																	 FontWeight="SemiBold"
+																	 Margin="0,0,5,0" />
+														<TextBox x:Name="DisplayColorBox"
+																		 IsReadOnly="True"
+																		 VerticalAlignment="Center"
+																		 Grid.Column="1"
+																		 FontSize="12"
+																		 Text="9135428" />
+													</Grid>
+													<t:ColorCanvas x:Name="DisplayColorCanvas"
+																				 Margin="5,0"
+																				 UsingAlphaChannel="False"
+																				 SelectedColor="#FF66492F"
+																				 SelectedColorChanged="DisplayColorCanvas_SelectedColorChanged" />
+												</StackPanel>
+											</StackPanel>
+										</Grid>
+									</ScrollViewer>
+								</TabItem>
+
+								<TabItem x:Name="EnchantTab"
+												 Header="Enchantments">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+										</Grid.ColumnDefinitions>
+
+										<StackPanel Orientation="Vertical"
+																Margin="5">
+											<Grid Tag="Repair Cost"
+														Margin="5,0,5,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<TextBlock Text="Anvil Repair Cost (levels):"
+																	 FontSize="14"
+																	 FontWeight="SemiBold" />
+												<t:IntegerUpDown x:Name="EnchRepairCost"
+																				 Value="1"
+																				 Grid.Column="1"
+																				 Margin="5,0,0,0"
+																				 Minimum="0"
+																				 Maximum="99"
+																				 ValueChanged="EnchRepairCost_ValueChanged" />
+											</Grid>
+											<Button x:Name="EnchTypeBtn"
+															Content="Enchanting Type: Standard"
+															Tag="std"
+															Padding="1,2"
+															Margin="5"
+															Click="EnchTypeBtn_Click" />
+											<Grid Tag="Ench Combo + Lvl"
+														Margin="5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+
+												<ComboBox x:Name="EnchantmentCombo"
+																	SelectedIndex="0">
+
+													<ComboBoxItem Content="Protection" />
+												</ComboBox>
+
+												<t:IntegerUpDown x:Name="EnchLevelUpDn"
+																				 Value="1"
+																				 Width="61"
+																				 Grid.Column="1"
+																				 Margin="5,0,0,0"
+																				 Maximum="99"
+																				 Minimum="1" />
+											</Grid>
+											<CheckBox x:Name="EnchShowAllCheck"
+																Content="Show All Enchantments"
+																Margin="5,0"
+																Checked="EnchShowAllCheck_Changed"
+																Unchecked="EnchShowAllCheck_Changed" />
+											<StackPanel Orientation="Horizontal"
+																	Margin="5">
+												<Button x:Name="EnchAddBtn"
+																Content="Add"
+																Width="72"
+																Margin="0,0,5,0"
+																Padding="1,2"
+																Click="EnchAddBtn_Click" />
+												<Button x:Name="EnchRemoveBtn"
+																Content="Remove"
+																Width="72"
+																Padding="1,2"
+																Click="EnchRemoveBtn_Click" />
+											</StackPanel>
+										</StackPanel>
+
+										<StackPanel Grid.Column="1"
+																Margin="-5,5,5,5">
+											<TextBlock Text="Current Enchantments"
+																 FontSize="14"
+																 FontWeight="SemiBold"
+																 Margin="5,0,0,0" />
+											<ListBox x:Name="EnchList"
+															 Margin="5,5,0,5"
+															 Height="150" />
+										</StackPanel>
+									</Grid>
+								</TabItem>
+
+								<TabItem x:Name="PotionTab"
+												 Header="Potion">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+										</Grid.ColumnDefinitions>
+
+										<StackPanel Tag="Left"
+																Margin="5">
+											<Grid Tag="Title + Meta">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<TextBlock Text="Base (damage value):"
+																	 ToolTip="The base effect determines the appearance and damage value of the potion. Its effect means nothing when custom effects are applied"
+																	 FontSize="14"
+																	 FontWeight="SemiBold" />
+												<TextBox x:Name="PotionMetaBox"
+																 Grid.Column="1"
+																 Text="0"
+																 ToolTip="The base effect determines the appearance and damage value of the potion. Its effect means nothing when custom effects are applied"
+																 IsReadOnly="True"
+																 Margin="5,0,0,0"
+																 HorizontalContentAlignment="Center" />
+											</Grid>
+
+											<Grid Tag="Combo + Str"
+														Margin="0,5,0,0">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+
+												<ComboBox x:Name="PotionBaseCombo"
+																	SelectedIndex="0"
+																	Margin="0,0,5,0"
+																	SelectionChanged="PotionBaseCombo_SelectionChanged">
+													<ComboBoxItem Content="Speed" />
+												</ComboBox>
+
+												<Button x:Name="PotionBaseStrBtn"
+																Content="I"
+																Width="56"
+																Grid.Column="1"
+																Click="PotionBaseStrBtn_Click" />
+											</Grid>
+
+											<Grid Tag="Extended + Splash"
+														Margin="0,5,0,0">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<CheckBox x:Name="PotionBaseExtendedCheck"
+																	Content="Extended"
+																	Checked="PotionRefreshHandler"
+																	Unchecked="PotionRefreshHandler" />
+												<CheckBox x:Name="PotionBaseSplashCheck"
+																	Content="Splash"
+																	Grid.Column="1"
+																	Checked="PotionRefreshHandler"
+																	Unchecked="PotionRefreshHandler" />
+											</Grid>
+
+											<Separator Margin="-2,5" />
+
+											<TextBlock Text="Custom:"
+																 FontSize="14"
+																 FontWeight="SemiBold" />
+
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+
+												<ComboBox x:Name="PotionCustomCombo"
+																	SelectedIndex="0"
+																	Margin="0,0,5,0">
+													<ComboBoxItem Content="Speed" />
+												</ComboBox>
+
+												<t:ByteUpDown x:Name="PotionCustomLvlUpDown"
+																			Value="1"
+																			Width="56"
+																			Grid.Column="1"
+																			Minimum="1"
+																			ToolTip="This is the apparent affect to the player. In the data, the effect is zero-based, so that Speed II, for example, will have an amplifier of 1." />
+											</Grid>
+
+											<Grid Margin="0,5,0,0">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<TextBlock Text="Duration (seconds):" />
+												<t:SingleUpDown x:Name="PotionDurationUpDown"
+																				Value="30"
+																				Grid.Column="1"
+																				Margin="5,0,0,0"
+																				Minimum="0.05"
+																				MouseWheelActiveTrigger="MouseOver"
+																				FormatString="#.00"
+																				ValueChanged="PotionDurationUpDown_ValueChanged" />
+											</Grid>
+
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<CheckBox x:Name="PotionParticlesCheck"
+																	Content="Show Particles"
+																	IsChecked="True"
+																	Margin="0,5,0,0"
+																	Checked="PotionParticlesCheck_Checked"
+																	Unchecked="PotionParticlesCheck_Unchecked" />
+												<CheckBox x:Name="PotionAmbientCheck"
+																	Content="Ambient"
+																	ToolTip="Show particles as partially transparent, like those from a beacon-induced effect."
+																	Grid.Column="1"
+																	Margin="0,5,0,0" />
+											</Grid>
+
+											<StackPanel Orientation="Horizontal"
+																	Margin="0,5,0,0">
+												<Button x:Name="PotionCustomAddBtn"
+																Content="Add"
+																Width="72"
+																Padding="1,2"
+																Click="PotionCustomAddBtn_Click" />
+												<Button x:Name="PotionCustomRemoveBtn"
+																Content="Remove"
+																Width="72"
+																Margin="5,0,0,0"
+																Padding="1,2"
+																Click="PotionCustomRemoveBtn_Click" />
+											</StackPanel>
+										</StackPanel>
+
+										<Grid Grid.Column="1"
+													Margin="5,0,0,0">
+											<Grid.RowDefinitions>
+												<RowDefinition Height="Auto" />
+												<RowDefinition Height="*" />
+											</Grid.RowDefinitions>
+
+											<TextBlock Text="Current Effects:"
+																 FontSize="14"
+																 FontWeight="SemiBold"
+																 Margin="0,5,0,0" />
+											<ListBox x:Name="PotionList"
+															 Grid.Row="1"
+															 Margin="0,0,5,5" />
+										</Grid>
+									</Grid>
+								</TabItem>
+
+								<TabItem x:Name="BookTab"
+												 Header="Book">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto" />
+											<ColumnDefinition Width="*" />
+										</Grid.ColumnDefinitions>
+
+										<StackPanel Tag="Left">
+											<Grid x:Name="BookLitGrid"
+														Margin="5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+												<Grid.RowDefinitions>
+													<RowDefinition Height="Auto" />
+													<RowDefinition Height="Auto" />
+												</Grid.RowDefinitions>
+
+												<Label Content="Title:"
+															 Padding="0" />
+												<TextBox x:Name="BookTitleBox"
+																 Grid.Column="1"
+																 TextChanged="BookTitleBox_TextChanged" />
+
+												<Label Content="Author:"
+															 Grid.Row="1"
+															 Margin="0,5,5,0"
+															 Padding="0" />
+												<TextBox x:Name="BookAuthorBox"
+																 Grid.Column="1"
+																 Grid.Row="1"
+																 Margin="0,5,0,0"
+																 TextChanged="BookAuthorBox_TextChanged" />
+											</Grid>
+											<Grid Margin="5,0,5,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<TextBlock Text="Generation:"
+																	 VerticalAlignment="Center" />
+												<ComboBox x:Name="BookGenerationCombo"
+																	Grid.Column="1"
+																	SelectedIndex="0"
+																	Margin="5,0,0,0"
+																	SelectionChanged="BookGenerationCombo_SelectionChanged">
+													<ComboBoxItem Content="Original (0)"
+																				Tag="0" />
+													<ComboBoxItem Content="Copy (1)"
+																				Tag="1" />
+													<ComboBoxItem Content="Copy of a Copy (2)"
+																				Tag="2" />
+													<ComboBoxItem Content="Tattered (3)"
+																				Tag="3" />
+												</ComboBox>
+											</Grid>
+
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<TextBox x:Name="BookCurrentPageBox"
+																 Width="127"
+																 Height="197"
+																 Margin="5"
+																 SpellCheck.IsEnabled="True"
+																 VerticalScrollBarVisibility="Visible"
+																 AcceptsReturn="True"
+																 MaxLines="14"
+																 TextWrapping="Wrap"
+																 FontSize="11"
+																 ToolTip="If you have to scroll, it probably won't fit on the page."
+																 TextChanged="BookCurrentPageBox_TextChanged" />
+												<StackPanel Grid.Column="1"
+																		Margin="0,5,5,0"
+																		Width="96">
+													<Grid Margin="0,0,0,5">
+														<Grid.ColumnDefinitions>
+															<ColumnDefinition Width="Auto" />
+															<ColumnDefinition Width="*" />
+														</Grid.ColumnDefinitions>
+
+														<TextBlock Text="Page:"
+																			 VerticalAlignment="Center" />
+														<TextBox x:Name="BookPageNumberBox"
+																		 Text="1 of 1"
+																		 IsReadOnly="True"
+																		 Grid.Column="1"
+																		 HorizontalContentAlignment="Center"
+																		 Margin="5,0,0,0"
+																		 Padding="0,2" />
+													</Grid>
+
+													<Button x:Name="BookSavePageBtn"
+																	Content="Save"
+																	IsEnabled="False"
+																	Visibility="Collapsed" />
+													<Button x:Name="BookNewPageBtn"
+																	Content="New"
+																	Margin="0,5"
+																	Click="BookNewPageBtn_Click"
+																	Padding="1,2" />
+													<Button x:Name="BookDeletePageBtn"
+																	Content="Delete"
+																	Click="BookDeletePageBtn_Click"
+																	Padding="1,2" />
+												</StackPanel>
+											</Grid>
+										</StackPanel>
+
+										<StackPanel Grid.Column="1"
+																Margin="5">
+											<TextBlock Text="Pages:"
+																 FontSize="14"
+																 FontWeight="SemiBold" />
+											<ListBox x:Name="BookPagesList"
+															 Height="252"
+															 Margin="0,4,0,0"
+															 SelectedIndex="0"
+															 SelectionChanged="BookPagesList_SelectionChanged">
+												<ListBoxItem Content="1:"
+																		 Tag="A massive 15-ton center anchor (above) destined for the Titanic makes its way in the spring of 1911 from a foundry in the Midlands of England to the local railway yard, whence it would be conveyed to Fleetwood on the coast, then across the Irish Sea to" />
+											</ListBox>
+										</StackPanel>
+									</Grid>
+								</TabItem>
+
+								<TabItem x:Name="FwStarTab"
+												 Header="Fireworks Star">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+										</Grid.ColumnDefinitions>
+
+										<StackPanel>
+											<Grid Margin="5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<CheckBox x:Name="FwStarFlickerCheck"
+																	Content="Flicker"
+																	Checked="FwStarChecks_Changed"
+																	Unchecked="FwStarChecks_Changed" />
+												<CheckBox x:Name="FwStarTrailCheck"
+																	Content="Trail"
+																	Grid.Column="1"
+																	Unchecked="FwStarChecks_Changed"
+																	Checked="FwStarChecks_Changed" />
+											</Grid>
+
+											<Grid Margin="5,0">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<TextBlock Text="Shape:"
+																	 VerticalAlignment="Center"
+																	 Margin="0,0,5,0" />
+												<ComboBox x:Name="FwStarShapeCombo"
+																	Grid.Column="1"
+																	SelectedIndex="0"
+																	SelectionChanged="FwStarShapeCombo_SelectionChanged">
+													<ComboBoxItem Content="Small Ball (0)" />
+													<ComboBoxItem Content="Large Ball (1)" />
+													<ComboBoxItem Content="Star (2)" />
+													<ComboBoxItem Content="Creeper (3)" />
+													<ComboBoxItem Content="Burst (4)" />
+												</ComboBox>
+											</Grid>
+
+											<Grid Margin="0,5,0,0">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<TextBlock Text="Color:"
+																	 FontSize="14"
+																	 FontWeight="SemiBold"
+																	 Margin="5,0,0,0"
+																	 VerticalAlignment="Center" />
+												<TextBox x:Name="FwStarColorBox"
+																 Text="0"
+																 Grid.Column="1"
+																 Margin="5,0"
+																 IsReadOnly="True"
+																 VerticalAlignment="Center" />
+											</Grid>
+											<t:ColorCanvas x:Name="FwStarColorCanvas"
+																		 Margin="5"
+																		 UsingAlphaChannel="False"
+																		 RenderTransformOrigin="0,0"
+																		 HorizontalAlignment="Left"
+																		 SelectedColorChanged="FwStarColorCanvas_SelectedColorChanged" />
+										</StackPanel>
+
+										<StackPanel Grid.Column="1">
+											<TextBlock Text="Main Colors"
+																 FontSize="14"
+																 FontWeight="SemiBold"
+																 Margin="5" />
+											<ListBox x:Name="FwStarMainColorsList"
+															 Height="96"
+															 Margin="5,0" />
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Button x:Name="FwStarMainColorsAddBtn"
+																Content="Add"
+																Margin="5"
+																Padding="1,2"
+																Click="FwStarMainColorsAddBtn_Click" />
+												<Button x:Name="FwStarMainColorsRemoveBtn"
+																Content="Remove"
+																Grid.Column="1"
+																Margin="0,5,5,5"
+																Padding="1,2"
+																Click="FwStarMainColorsRemoveBtn_Click" />
+											</Grid>
+
+											<TextBlock Text="Fade Colors"
+																 FontSize="14"
+																 FontWeight="SemiBold"
+																 Padding="5,5,0,0" />
+											<ListBox x:Name="FwStarFadeColorsList"
+															 Height="96"
+															 Margin="5,0" />
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Button x:Name="FwStarFadeColorsAddBtn"
+																Content="Add"
+																Margin="5"
+																Padding="1,2"
+																Click="FwStarFadeColorsAddBtn_Click" />
+												<Button x:Name="FwStarFadeColorsRemoveBtn"
+																Content="Remove"
+																Grid.Column="1"
+																Margin="0,5,5,5"
+																Padding="1,2"
+																Click="FwStarFadeColorsRemoveBtn_Click" />
+											</Grid>
+										</StackPanel>
+									</Grid>
+								</TabItem>
+
+								<TabItem x:Name="FwRocketTab"
+												 Header="Fireworks Rocket">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+										</Grid.ColumnDefinitions>
+
+										<StackPanel x:Name="FwRocketSelectedExplosionStack"
+																Margin="5"
+																IsEnabled="False">
+											<Label Content="Current Explosion"
+														 FontSize="14"
+														 FontWeight="SemiBold"
+														 Margin="0,0,0,5"
+														 Padding="0" />
+
+											<Grid Margin="0,0,0,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<CheckBox x:Name="FwRocketFlickerCheck"
+																	Content="Flicker"
+																	Checked="FwRocket_Check_Changed"
+																	Unchecked="FwRocket_Check_Changed" />
+												<CheckBox x:Name="FwRocketTrailCheck"
+																	Content="Trail"
+																	Grid.Column="1"
+																	Unchecked="FwRocket_Check_Changed"
+																	Checked="FwRocket_Check_Changed" />
+											</Grid>
+
+											<Grid Margin="0,0,0,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Grid.RowDefinitions>
+													<RowDefinition Height="Auto" />
+													<RowDefinition Height="Auto" />
+												</Grid.RowDefinitions>
+
+												<Label Content="Shape:"
+															 Padding="0"
+															 VerticalAlignment="Center" />
+												<ComboBox x:Name="FwRocketShapeCombo"
+																	Grid.Column="1"
+																	SelectedIndex="0"
+																	Margin="5,0,0,0"
+																	SelectionChanged="FwRocketShapeCombo_SelectionChanged">
+													<ComboBoxItem Content="Small Ball (0)" />
+													<ComboBoxItem Content="Large Ball (1)" />
+													<ComboBoxItem Content="Star (2)" />
+													<ComboBoxItem Content="Creeper (3)" />
+													<ComboBoxItem Content="Burst (4)" />
+												</ComboBox>
+
+												<Label Content="Color:"
+															 VerticalAlignment="Center"
+															 Grid.Row="1"
+															 Margin="0,5,0,0"
+															 Padding="0" />
+												<t:ColorPicker x:Name="FwRocketColorPicker"
+																			 Grid.Column="1"
+																			 Grid.Row="1"
+																			 Margin="5,5,0,0"
+																			 DisplayColorAndName="True"
+																			 ColorMode="ColorCanvas"
+																			 ShowStandardColors="False"
+																			 UsingAlphaChannel="False"
+																			 ShowRecentColors="True" />
+											</Grid>
+
+											<Label Content="Main Colors"
+														 FontWeight="SemiBold"
+														 Padding="0" />
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+
+												<ListBox x:Name="FwRocketMainColorsList"
+																 Height="80"
+																 Margin="0,0,5,0" />
+
+												<StackPanel Grid.Column="1">
+													<Button x:Name="FwRocketMainColorsAddBtn"
+																	Content="Add"
+																	Width="72"
+																	Padding="1,2"
+																	Click="FwRocketMainColorsAddBtn_Click" />
+													<Button x:Name="FwRocketMainColorsRemoveBtn"
+																	Content="Remove"
+																	Width="72"
+																	Margin="0,5,0,0"
+																	Padding="1,2"
+																	Click="FwRocketMainColorsRemoveBtn_Click" />
+												</StackPanel>
+											</Grid>
+
+											<Label Content="Fade Colors"
+														 Padding="0,5,0,0"
+														 FontWeight="SemiBold" />
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+
+												<ListBox x:Name="FwRocketFadeColorsList"
+																 Height="80"
+																 Margin="0,0,5,0" />
+
+												<StackPanel Grid.Column="1">
+													<Button x:Name="FwRocketFadeColorsAddBtn"
+																	Content="Add"
+																	Width="72"
+																	Padding="1,2"
+																	Click="FwRocketFadeColorsAddBtn_Click" />
+													<Button x:Name="FwRocketFadeColorsRemoveBtn"
+																	Content="Remove"
+																	Width="72"
+																	Margin="0,5,0,0"
+																	Padding="1,2"
+																	Click="FwRocketFadeColorsRemoveBtn_Click" />
+												</StackPanel>
+											</Grid>
+										</StackPanel>
+
+										<StackPanel Grid.Column="1"
+																Margin="5">
+											<Grid Margin="0,0,0,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<TextBlock Text="Flight Length (relative):"
+																	 VerticalAlignment="Center" />
+												<t:IntegerUpDown x:Name="FwRocketFlightUpDown"
+																				 Minimum="-2"
+																				 Maximum="10"
+																				 Grid.Column="1"
+																				 Margin="5,0,0,0"
+																				 ParsingNumberStyle="Integer"
+																				 Value="1"
+																				 DefaultValue="1"
+																				 DisplayDefaultValueOnEmptyText="True"
+																				 ValueChanged="FwRocketFlightUpDown_ValueChanged" />
+											</Grid>
+
+											<TextBlock Text="All Explosions"
+																 FontSize="14"
+																 FontWeight="SemiBold" />
+											<ListBox x:Name="FwRocketExplosionsList"
+															 Height="224"
+															 Margin="0"
+															 SelectionChanged="FwRocketExplosionsList_SelectionChanged" />
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Button x:Name="FwRocketExplosionNewBtn"
+																Content="New"
+																Margin="0,5,5,5"
+																Padding="1,2"
+																Click="FwRocketExplosionNewBtn_Click" />
+												<Button x:Name="FwRocketExplosionDeleteBtn"
+																Content="Delete"
+																Margin="0,5"
+																Grid.Column="1"
+																Padding="1,2"
+																Click="FwRocketExplosionDeleteBtn_Click" />
+											</Grid>
+										</StackPanel>
+									</Grid>
+								</TabItem>
+
+								<TabItem x:Name="OtherTab"
+												 Header="Other">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+										</Grid.ColumnDefinitions>
+
+										<StackPanel x:Name="SkullPanel"
+																Margin="5">
+											<Label Content="Skulls"
+														 FontSize="14"
+														 FontWeight="SemiBold"
+														 Padding="0"
+														 Margin="0,0,0,5" />
+
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Label Content="Player Name:"
+															 VerticalAlignment="Center"
+															 Padding="0" />
+
+												<TextBox x:Name="SkullPlayerNameBox"
+																 Grid.Column="1"
+																 Margin="5,0,0,0"
+																 TextChanged="SkullPlayerNameBox_TextChanged"
+																 Height="20" />
+											</Grid>
+
+											<ProgressBar x:Name="SkullProgress"
+																	 Height="16"
+																	 IsIndeterminate="True"
+																	 Margin="0,5"
+																	 Visibility="Collapsed" />
+
+											<Grid>
+												<Image x:Name="SkullPreviewImg"
+															 Width="128"
+															 Height="128"
+															 Panel.ZIndex="3"
+															 Margin="0,5,0,0" />
+												<Image x:Name="SkullTopImg"
+															 Width="128"
+															 Height="128"
+															 Panel.ZIndex="4"
+															 Margin="0,5,0,0"
+															 OpacityMask="Black" />
+											</Grid>
+										</StackPanel>
+
+										<StackPanel x:Name="MapPanel"
+																Grid.Column="1"
+																Margin="5">
+											<Label Content="Map"
+														 FontSize="14"
+														 FontWeight="SemiBold"
+														 Padding="0" />
+
+											<CheckBox x:Name="MapScaleCheck"
+																Content="Scaling?"
+																Margin="0,7.5,0,0"
+																Unchecked="MapScaleCheck_Unchecked"
+																Checked="MapScaleCheck_Checked" />
+
+											<Grid Margin="0,5,0,0">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Label Content="Map ID (Damage Value):"
+															 Padding="0"
+															 ToolTip="ID of map data stored with level. To change the map data, edit map_#.dat with an NBT editor." />
+												<t:IntegerUpDown x:Name="MapIdUpDown"
+																				 Value="0"
+																				 Grid.Column="1"
+																				 Margin="5,0,0,0"
+																				 Maximum="5000"
+																				 Minimum="0"
+																				 MouseWheelActiveTrigger="MouseOver"
+																				 ValueChanged="MapIdUpDown_ValueChanged"
+																				 DefaultValue="0"
+																				 DisplayDefaultValueOnEmptyText="True" />
+											</Grid>
+										</StackPanel>
+									</Grid>
+								</TabItem>
+							</TabControl>
+						</Grid>
+					</Grid>
+
+					<TextBox x:Name="GiveCommandOutputBox"
+									 Text="/give einsteinsci diamond_sword 1 0"
+									 IsReadOnly="True"
+									 Margin="0,5,0,0"
+									 Grid.Row="1"
+									 Height="64"
+									 FontFamily="Consolas"
+									 Padding="1"
+									 VerticalScrollBarVisibility="Auto"
+									 TextWrapping="WrapWithOverflow"
+									 IsReadOnlyCaretVisible="True"
+									 Background="#FFEAEAEA"
+									 MouseEnter="GiveCommandOutputBox_MouseEnter"
+									 MouseLeave="GiveCommandOutputBox_MouseLeave"
+									 MouseDown="GiveCommandOutputBox_MouseDown" />
+				</Grid>
+			</TabItem>
+
+			<TabItem Header="/setblock" />
+
+			<TabItem Header="/tellraw">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="2*" />
+						</Grid.ColumnDefinitions>
+
+						<TreeView x:Name="TellrawTree">
+							<TreeViewItem>
+								<TreeViewItem.Header>
+									<StackPanel Orientation="Horizontal">
+										<Image Source="assets/ui/doc_compound.png" />
+										<TextBlock Text="" />
+									</StackPanel>
+								</TreeViewItem.Header>
+							</TreeViewItem>
+						</TreeView>
+
+						<Grid Grid.Column="2">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="*" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+
+							<Grid Tag="TopBar"
+										Margin="10,10,10,4">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+
+								<TextBlock Text="/tellraw"
+													 FontSize="18"
+													 Margin="0,0,10,0" />
+								<TextBox x:Name="TellrawPlayerBox"
+												 Text="einsteinsci"
+												 Grid.Column="1"
+												 FontSize="14"
+												 VerticalAlignment="Center"
+												 Margin="5,0,-2,0"
+												 Height="24"
+												 Padding="2,0,0,0"
+												 TextChanged="TellrawPlayerBox_TextChanged" />
+								<Button x:Name="TellrawSelectorBtn"
+												Grid.Column="2"
+												Content="@"
+												FontSize="14"
+												VerticalAlignment="Center"
+												Height="24"
+												Width="24"
+												Click="TellrawSelectorBtn_Click" />
+								<TextBlock Text="{}{...}"
+													 Grid.Column="3"
+													 FontFamily="Consolas"
+													 FontSize="18"
+													 Margin="10,0,0,0" />
+							</Grid>
+
+							<StackPanel Tag="TextFormatting"
+													Grid.Row="1">
+								<Grid Margin="0,5,5,0">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="Auto" />
+									</Grid.ColumnDefinitions>
+
+									<TextBlock Text="Text: "
+														 FontSize="14"
+														 VerticalAlignment="Center"
+														 FontWeight="SemiBold"
+														 Margin="10,0,5,0" />
+									<TextBox x:Name="TellrawTextBox"
+													 Grid.Column="1"
+													 Padding="2,0,0,0"
+													 Text="Text"
+													 FontSize="14"
+													 VerticalContentAlignment="Center"
+													 TextChanged="TellrawTextBox_TextChanged" />
+									<Button x:Name="TellrawViewerBtn_Text"
+													Grid.Column="2"
+													Content="Viewer"
+													Height="24"
+													ToolTip="An asterisk in here means the viewing player. Click for a gold star."
+													Margin="-2,0,5,0"
+													VerticalAlignment="Center"
+													Width="52"
+													Click="TellrawViewerBtn_Text_Click" />
+								</Grid>
+								<Grid Tag="Formatting"
+											Margin="5,5,10,0">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="*" />
+									</Grid.ColumnDefinitions>
+
+									<ToggleButton x:Name="TellrawBoldToggle"
+																ToolTip="Bold (§l)"
+																Width="22"
+																Margin="5,0,0,0"
+																Height="Auto"
+																Padding="2"
+																Click="TellrawBoldToggle_Click">
+										<Image Source="assets/ui/bold.png" />
+									</ToggleButton>
+									<ToggleButton x:Name="TellrawItalicToggle"
+																ToolTip="Italic (§o)"
+																Width="22"
+																Margin="5,0,0,0"
+																Height="Auto"
+																Padding="2"
+																Grid.Column="1"
+																Click="TellrawItalicToggle_Click">
+										<Image Source="assets/ui/italic.png" />
+									</ToggleButton>
+									<ToggleButton x:Name="TellrawUnderlineToggle"
+																ToolTip="Underline (§n)"
+																Width="22"
+																Margin="5,0,0,0"
+																Height="Auto"
+																Padding="2"
+																Grid.Column="2"
+																Click="TellrawUnderlineToggle_Click">
+										<Image Source="assets/ui/underline.png" />
+									</ToggleButton>
+									<ToggleButton x:Name="TellrawStrikethroughToggle"
+																ToolTip="Strikethrough (§m)"
+																Width="22"
+																Margin="5,0,0,0"
+																Height="Auto"
+																Padding="2"
+																Grid.Column="3"
+																Click="TellrawStrikethroughToggle_Click">
+										<Image Source="assets/ui/strikethrough.png" />
+									</ToggleButton>
+									<ToggleButton x:Name="TellrawObfuscatedToggle"
+																ToolTip="Obfuscated (§k)"
+																Width="22"
+																Margin="5,0,0,0"
+																Height="Auto"
+																Padding="2"
+																Grid.Column="4"
+																Click="TellrawObfuscatedToggle_Click">
+										<Image Source="assets/ui/obfuscated.png" />
+									</ToggleButton>
+
+									<TextBlock Text="Text Color:"
+														 Grid.Column="6"
+														 VerticalAlignment="Center" />
+									<ComboBox x:Name="TellrawTextColorCombo"
+														Grid.Column="7"
+														VerticalAlignment="Center"
+														Margin="5,0,0,0"
+														SelectedIndex="15"
+														VerticalContentAlignment="Center"
+														SelectionChanged="TellrawTextColorCombo_SelectionChanged">
+
+										<ComboBoxItem Tag="Black">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="Black"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Black"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Dark Blue">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="Navy"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Dark Blue"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Green">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="DarkGreen"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Dark Green"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Teal">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="Teal"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Teal"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Red">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="DarkRed"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Dark Red"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Purple">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="#FF64016E"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Purple"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Orange">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="Goldenrod"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Orange"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Silver">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="LightGray"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Light Gray"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="DarkGray">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="DarkGray"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Dark Gray"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Blue">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="#FF66B2FF"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Blue"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Lime">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="LightGreen"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Lime"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Cyan">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="Cyan"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Cyan"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Light Red">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="Salmon"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Light Red"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Pink">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="#FFFF8EFA"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Pink"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="Yellow">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="#FFFFFF8A"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="Yellow"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Tag="White">
+											<StackPanel Orientation="Horizontal"
+																	VerticalAlignment="Center">
+												<Rectangle Width="12"
+																	 Height="12"
+																	 VerticalAlignment="Center"
+																	 Fill="White"
+																	 Stroke="Black"
+																	 Margin="0,0,3,0" />
+												<TextBlock Text="White"
+																	 VerticalAlignment="Center" />
+											</StackPanel>
+										</ComboBoxItem>
+										<ComboBoxItem Content="Reset"
+																	ToolTip="Resets Color and Formatting" />
+									</ComboBox>
+
+
+								</Grid>
+							</StackPanel>
+							<StackPanel Tag="AddRemove"
+													Grid.Row="2"
+													Orientation="Horizontal"
+													Margin="10,10,0,5">
+								<Button x:Name="TellrawTextAddBtn"
+												Content="Add"
+												Width="80"
+												Height="24"
+												Click="TellrawTextAddBtn_Click" />
+								<Button x:Name="TellrawTextRemoveBtn"
+												Content="Remove"
+												Width="80"
+												Margin="5,0,0,0"
+												Height="24"
+												Click="TellrawTextRemoveBtn_Click" />
+							</StackPanel>
+
+							<ScrollViewer x:Name="TellrawPreviewScroll"
+														MinHeight="48"
+														VerticalScrollBarVisibility="Disabled"
+														HorizontalScrollBarVisibility="Visible"
+														Grid.Row="3"
+														Margin="10,0,10,10"
+														Background="#FF878787"
+														FontFamily="Consolas"
+														FontSize="16">
+
+								<StackPanel x:Name="TellrawPreviewPanel"
+														VerticalAlignment="Center"
+														Margin="5,0,50,0"
+														Orientation="Horizontal"
+														HorizontalAlignment="Left" />
+							</ScrollViewer>
+
+							<ScrollViewer Grid.Row="4"
+														Margin="0,0,10,0">
+								<StackPanel Margin="10,0,5,0">
+									<GroupBox>
+										<GroupBox.Header>
+											<CheckBox x:Name="TellrawClickEventEnableCheck"
+																Content="Click Event"
+																FontSize="14"
+																VerticalAlignment="Center"
+																VerticalContentAlignment="Center"
+																Click="TellrawClickEventEnableCheck_Click" />
+										</GroupBox.Header>
+
+										<StackPanel x:Name="TellrawClickEventGroup"
+																Margin="5,4,4,4"
+																IsEnabled="False">
+											<StackPanel Orientation="Horizontal"
+																	Margin="0,0,0,5">
+												<Label Content="Click Action Type:"
+															 FontWeight="SemiBold"
+															 FontSize="14"
+															 Padding="0" />
+												<ComboBox x:Name="TellrawClickActionCombo"
+																	Width="160"
+																	Margin="5,0,0,0"
+																	SelectedIndex="0"
+																	SelectionChanged="TellrawClickActionCombo_SelectionChanged">
+													<ComboBoxItem Content="Run Command / Chat" />
+													<ComboBoxItem Content="Suggest Command / Chat" />
+													<ComboBoxItem Content="Open URL" />
+												</ComboBox>
+											</StackPanel>
+
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Label x:Name="TellrawClickActionValueHeader"
+															 Content="Command / Chat:"
+															 VerticalAlignment="Center"
+															 Padding="0" />
+												<TextBox x:Name="TellrawClickActionBox"
+																 ToolTip="Commands must be prefixed with a slash, otherwise this will merely be entered as chat."
+																 Grid.Column="1"
+																 Margin="5,0,0,0"
+																 Height="20"
+																 VerticalContentAlignment="Center"
+																 TextChanged="TellrawClickActionBox_TextChanged" />
+
+											</Grid>
+										</StackPanel>
+									</GroupBox>
+
+									<GroupBox Margin="0,5,0,0">
+										<GroupBox.Header>
+											<CheckBox x:Name="TellrawHoverEventEnableCheck"
+																Content="Hover Event"
+																FontSize="14"
+																VerticalAlignment="Center"
+																VerticalContentAlignment="Center"
+																Click="TellrawHoverEventEnableCheck_Click" />
+										</GroupBox.Header>
+
+										<StackPanel x:Name="TellrawHoverEventGroup"
+																Margin="5,4,4,4"
+																IsEnabled="False">
+											<StackPanel Orientation="Horizontal"
+																	Margin="0,0,0,5">
+												<Label Content="Click Action Type:"
+															 FontWeight="SemiBold"
+															 FontSize="14"
+															 Padding="0" />
+												<ComboBox x:Name="TellrawHoverActionCombo"
+																	Width="160"
+																	Margin="5,0,0,0"
+																	SelectedIndex="0"
+																	SelectionChanged="TellrawHoverActionCombo_SelectionChanged">
+													<ComboBoxItem Content="Show Text" />
+													<ComboBoxItem Content="Show Item" />
+													<ComboBoxItem Content="Show Achievement / Stat" />
+													<ComboBoxItem Content="Show Entity" />
+												</ComboBox>
+											</StackPanel>
+
+											<Grid x:Name="TellrawHoverActionTextGrid">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Label x:Name="TellrawHoverActionValueHeader"
+															 Content="Text:"
+															 VerticalAlignment="Center"
+															 Padding="0" />
+
+												<Button x:Name="TellrawHoverActionItemMakerBtn"
+																Content="Create Item Data..."
+																HorizontalAlignment="Left"
+																Padding="5,2"
+																Visibility="Collapsed"
+																Click="TellrawHoverActionItemMakerBtn_Click" />
+												<Button x:Name="TellrawHoverActionAchievementStatBtn"
+																Content="Select Achievement / Statistic..."
+																HorizontalAlignment="Left"
+																Padding="5,2"
+																Visibility="Collapsed" />
+												<Button x:Name="TellrawHoverActionEntityMakerBtn"
+																Content="Create Entity Data... (coming soon!)"
+																HorizontalAlignment="Left"
+																Padding="5,2"
+																Visibility="Collapsed"
+																ToolTip="Will be ready when /summon is complete."
+																IsEnabled="False" />
+
+												<TextBox x:Name="TellrawHoverActionTextBox"
+																 Grid.Column="4"
+																 Margin="5,0,0,0"
+																 Height="20"
+																 VerticalContentAlignment="Center"
+																 TextChanged="TellrawHoverActionTextBox_TextChanged" />
+											</Grid>
+										</StackPanel>
+									</GroupBox>
+
+									<GroupBox Margin="0,5,0,0">
+										<GroupBox.Header>
+											<CheckBox x:Name="TellrawTranslateEnableCheck"
+																Content="Translate"
+																FontSize="14"
+																Click="TellrawTranslateEnableCheck_Click" />
+										</GroupBox.Header>
+
+										<StackPanel x:Name="TellrawTranslateGroup"
+																IsEnabled="False"
+																Visibility="Collapsed">
+											<Grid Margin="5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Grid.RowDefinitions>
+													<RowDefinition Height="Auto" />
+													<RowDefinition Height="Auto" />
+												</Grid.RowDefinitions>
+
+												<Label Content="Translation Identifier:"
+															 Padding="0" />
+												<TextBox x:Name="TellrawTranslateIdBox"
+																 Grid.Column="1"
+																 Margin="5,0,0,0"
+																 Text="achievement.theEnd2"
+																 TextChanged="TellrawTranslateIdBox_TextChanged" />
+
+												<Label x:Name="TellrawTranslateArgLbl"
+															 Content="Selected Argument:"
+															 Grid.Row="1"
+															 Padding="0,5,0,0"
+															 VerticalAlignment="Center" />
+												<TextBox x:Name="TellrawTranslateArgBox"
+																 Grid.Column="1"
+																 Grid.Row="1"
+																 Margin="5,5,0,0"
+																 TextChanged="TellrawTranslateArgBox_TextChanged"
+																 IsEnabled="False" />
+											</Grid>
+
+											<Grid Margin="5,0,5,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<StackPanel>
+													<Button x:Name="TellrawTranslateArgAddBox"
+																	Content="Add"
+																	Width="72"
+																	Click="TellrawTranslateArgAddBox_Click" />
+													<Button x:Name="TellrawTranslateArgRemoveBox"
+																	Content="Remove"
+																	Width="72"
+																	Margin="0,5,0,0"
+																	Click="TellrawTranslateArgRemoveBox_Click"
+																	IsEnabled="False" />
+												</StackPanel>
+
+												<ListBox x:Name="TellrawTranslateArgListBox"
+																 Grid.Column="1"
+																 Height="96"
+																 Margin="5,0,0,0"
+																 SelectionChanged="TellrawTranslateArgListBox_SelectionChanged" />
+											</Grid>
+										</StackPanel>
+									</GroupBox>
+
+									<GroupBox Margin="0,5,0,0">
+										<GroupBox.Header>
+											<CheckBox x:Name="TellrawScoreboardEnableCheck"
+																Content="Scoreboard"
+																FontSize="14"
+																Click="TellrawScoreboardEnableCheck_Click" />
+										</GroupBox.Header>
+
+										<StackPanel x:Name="TellrawScoreboardGroup"
+																IsEnabled="False">
+											<Grid Margin="0,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+
+												<Label Content="Player Name:"
+															 Padding="0"
+															 VerticalAlignment="Center"
+															 Margin="5,0,5,0" />
+												<TextBox x:Name="TellrawScoreboardPlayerBox"
+																 Grid.Column="1"
+																 TextChanged="TellrawScoreboardPlayerBox_TextChanged"
+																 Text="name" />
+												<Button x:Name="TellrawScoreboardViewerBtn"
+																Grid.Column="2"
+																Content="Viewer"
+																Height="22"
+																ToolTip="An asterisk in here means the viewing player. Click for a gold star."
+																Margin="-2,0,5,0"
+																VerticalAlignment="Center"
+																Width="52"
+																Click="TellrawScoreboardViewerBtn_Click" />
+											</Grid>
+
+											<Grid Margin="5,0,5,5">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+												</Grid.ColumnDefinitions>
+
+												<Label Content="Objective Name:"
+															 Padding="0"
+															 VerticalAlignment="Center"
+															 Margin="0,0,5,0" />
+												<TextBox x:Name="TellrawScoreboardObjBox"
+																 Grid.Column="1"
+																 Height="22"
+																 TextChanged="TellrawScoreboardObjBox_TextChanged"
+																 Text="objective" />
+											</Grid>
+										</StackPanel>
+									</GroupBox>
+								</StackPanel>
+							</ScrollViewer>
+						</Grid>
+					</Grid>
+
+					<TextBox x:Name="TellrawCommandOutputBox"
+									 Text="/tellraw einsteinsci {text:&quot;Text&quot;}"
+									 IsReadOnly="True"
+									 Margin="0,5,0,0"
+									 Grid.Row="1"
+									 Height="64"
+									 FontFamily="Consolas"
+									 Padding="1"
+									 VerticalScrollBarVisibility="Auto"
+									 TextWrapping="WrapWithOverflow"
+									 IsReadOnlyCaretVisible="True"
+									 Background="#FFEAEAEA"
+									 MouseEnter="TellrawCommandOutputBox_MouseEnter"
+									 MouseLeave="TellrawCommandOutputBox_MouseLeave"
+									 MouseDown="TellrawCommandOutputBox_MouseDown" />
+				</Grid>
+			</TabItem>
+		</TabControl>
+	</Grid>
+</Window>
