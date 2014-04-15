@@ -243,6 +243,22 @@ namespace CommandGeneratorWPF.NBT
 				return 0;
 			}
 		}
+		public static byte? ToByte(this bool? b)
+		{
+			if (!b.HasValue)
+			{
+				return null;
+			}
+
+			if (b.Value)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
 
 		public static SelectorWindow GenerateSelector(EventHandler onClosed)
 		{

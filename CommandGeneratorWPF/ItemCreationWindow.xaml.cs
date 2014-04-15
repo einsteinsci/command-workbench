@@ -540,7 +540,7 @@ namespace CommandGeneratorWPF
 					{
 						if (MapPanel.IsEnabled)
 						{
-							tag.map_is_scaling = MapScaleCheck.IsChecked;
+							tag.map_is_scaling = MapScaleCheck.IsChecked.ToByte();
 						}
 						else
 						{
@@ -1004,10 +1004,10 @@ namespace CommandGeneratorWPF
 			byte effectByte = (byte)((PotionBaseCombo.SelectedItem as ComboBoxItem).Tag);
 			int effect = effectByte;
 
-			Bit strBit = (PotionBaseStrBtn.Content as string) == "II";
+			byte strBit = ((PotionBaseStrBtn.Content as string) == "II").ToByte();
 			int str = strBit;
 
-			Bit extBit = PotionBaseExtendedCheck.IsChecked ?? false;
+			byte extBit = (PotionBaseExtendedCheck.IsChecked ?? false).ToByte();
 			int ext = extBit;
 
 			int splash = 0;
