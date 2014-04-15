@@ -10,10 +10,11 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Newtonsoft.Json.Converters;
 
 namespace CommandGeneratorWPF.NBT
 {
-	public enum TextColor
+	public enum TextColor : byte
 	{
 		black = 0,
 		dark_blue = 1,
@@ -34,20 +35,20 @@ namespace CommandGeneratorWPF.NBT
 		reset = 16
 	}
 
-	public enum ClickCommand
+	public enum ClickCommand : byte
 	{
 		run_command = 0,
 		suggest_command = 1,
 		open_url = 2,
-		NULL = 1234,
+		NULL = 100,
 	}
-	public enum HoverCommand
+	public enum HoverCommand : byte
 	{
 		show_text = 0,
 		show_item = 1,
 		show_achievement = 2,
 		show_entity = 3,		// 1.8
-		NULL = 1234,
+		NULL = 100,
 	}
 
 	public class TextRunTag : IJsonable
@@ -57,6 +58,7 @@ namespace CommandGeneratorWPF.NBT
 		public class ClickEvent
 		{
 			[JsonProperty]
+			[JsonConverter(typeof(StringQuotelessEnumConverter))]
 			[DefaultValue(ClickCommand.NULL)]
 			public ClickCommand action
 			{ get; set; }
@@ -89,6 +91,7 @@ namespace CommandGeneratorWPF.NBT
 		{
 			[JsonProperty]
 			[DefaultValue(HoverCommand.NULL)]
+			[JsonConverter(typeof(StringQuotelessEnumConverter))]
 			public HoverCommand action
 			{ get; set; }
 
@@ -140,6 +143,7 @@ namespace CommandGeneratorWPF.NBT
 			/// <summary>
 			/// Objective Name
 			/// </summary>
+			[JsonConverter(typeof(QuotelessStringConverter))]
 			public string objective
 			{ get; set; }
 
@@ -160,6 +164,7 @@ namespace CommandGeneratorWPF.NBT
 		public string text
 		{ get; set; }
 
+		[JsonConverter(typeof(StringQuotelessEnumConverter))]
 		[DefaultValue(TextColor.white)]
 		public TextColor color
 		{ get; set; }
@@ -193,8 +198,9 @@ namespace CommandGeneratorWPF.NBT
 
 		public HoverEvent hoverEvent
 		{ get; set; }
-		
+
 		[DefaultValue("")]
+		[JsonConverter(typeof(QuotelessStringConverter))]
 		public string translate
 		{
 			get

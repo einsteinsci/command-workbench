@@ -17,7 +17,7 @@ namespace CommandGeneratorWPF.NBT
 	{
 		#region components
 		[Flags]
-		public enum HideFlagsFormat
+		public enum HideFlagsFormat : byte
 		{
 			none = 0,
 			ench = 1,
@@ -28,7 +28,7 @@ namespace CommandGeneratorWPF.NBT
 			other = 32
 		};
 
-		enum FireworksStarType
+		enum FireworksStarType : byte
 		{
 			Small_Ball = 0,
 			Large_Ball = 1,

@@ -16,7 +16,7 @@ namespace CommandGeneratorWPF.NBT
 	/// <summary>
 	/// Used for available enchantments
 	/// </summary>
-	public enum EnchantmentType
+	public enum EnchantmentType : byte
 	{
 		None = 0,
 		Sword,
@@ -35,7 +35,7 @@ namespace CommandGeneratorWPF.NBT
 	/// <summary>
 	/// Type of Wood. Applies to Leaves and saplings as well
 	/// </summary>
-	public enum WoodType
+	public enum WoodType : short
 	{
 		Oak = 0,
 		Spruce,
@@ -48,7 +48,7 @@ namespace CommandGeneratorWPF.NBT
 	/// <summary>
 	/// Color. Applies to all color-based items
 	/// </summary>
-	public enum DyeType
+	public enum DyeType : byte
 	{
 		White = 0,
 		Orange,
@@ -71,7 +71,7 @@ namespace CommandGeneratorWPF.NBT
 	/// <summary>
 	/// Type of Flower
 	/// </summary>
-	public enum FlowerType
+	public enum FlowerType : byte
 	{
 		Poppy = 0,
 		BlueOrchid,
@@ -88,7 +88,7 @@ namespace CommandGeneratorWPF.NBT
 	/// Used because of Minecraft's odd way of putting different stone-like
 	/// slabs together under a single ID
 	/// </summary>
-	public enum StoneSpecialType
+	public enum StoneSpecialType : byte
 	{
 		Stone = 0,
 		Sandstone,

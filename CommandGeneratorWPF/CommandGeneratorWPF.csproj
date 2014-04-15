@@ -118,9 +118,11 @@
     <Compile Include="NBT\Block.cs" />
     <Compile Include="NBT\ItemFullTag.cs" />
     <Compile Include="NBT\TextRunTag.cs" />
+    <Compile Include="QuotelessStringConverter.cs" />
     <Compile Include="SelectorWindow.xaml.cs">
       <DependentUpon>SelectorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringQuotelessEnumConverter.cs" />
     <Page Include="ItemCreationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
