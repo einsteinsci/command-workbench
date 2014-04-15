@@ -1037,6 +1037,11 @@ namespace CommandGeneratorWPF
 
 		private void PotionBaseCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			if (isLoading)
+			{
+				return;
+			}
+
 			byte b = 0;
 
 			try

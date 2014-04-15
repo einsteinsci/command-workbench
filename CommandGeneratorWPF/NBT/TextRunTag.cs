@@ -378,20 +378,23 @@ namespace CommandGeneratorWPF.NBT
 				transl.Header = Extras.TextImg("translate: " + translate, "doc_string.png");
 				root.Items.Add(transl);
 
-				if (with.Count != 0)
+				if (with != null)
 				{
-					TreeViewItem w = new TreeViewItem();
-					w.Header = Extras.TextImg("with:", "doc_list.png");
-
-					foreach (string s in with)
+					if (with.Count != 0)
 					{
-						TreeViewItem i = new TreeViewItem();
-						i.Header = Extras.TextImg(s, "doc_string.png");
-						w.Items.Add(i);
-					}
+						TreeViewItem w = new TreeViewItem();
+						w.Header = Extras.TextImg("with:", "doc_list.png");
 
-					w.IsExpanded = true;
-					root.Items.Add(w);
+						foreach (string s in with)
+						{
+							TreeViewItem i = new TreeViewItem();
+							i.Header = Extras.TextImg(s, "doc_string.png");
+							w.Items.Add(i);
+						}
+
+						w.IsExpanded = true;
+						root.Items.Add(w);
+					}
 				}
 			}
 			#endregion
@@ -789,9 +792,12 @@ namespace CommandGeneratorWPF.NBT
 				hasTooltip = true;
 
 				text.Text = "[Translate: " + tag.translate + "(";
-				foreach (string s in tag.with)
+				if (tag.with != null)
 				{
-					text.Text += s + ", ";
+					foreach (string s in tag.with)
+					{
+						text.Text += s + ", ";
+					}
 				}
 
 				if (text.Text.EndsWith(", "))
