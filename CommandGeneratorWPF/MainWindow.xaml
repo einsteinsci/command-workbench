@@ -5,7 +5,7 @@
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				mc:Ignorable="d"
 				x:Class="CommandGeneratorWPF.MainWindow"
-				Title="Command Workbench v0.7.6.28"
+				Title="Command Workbench v0.7.6.35"
 				Icon="assets/iconLarge.png"
 				WindowStartupLocation="CenterScreen"
 				Closed="Window_Closed"
@@ -1263,7 +1263,26 @@
 				</Grid>
 			</TabItem>
 
-			<TabItem Header="/setblock" />
+			<TabItem Header="/setblock">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="3*" />
+					</Grid.ColumnDefinitions>
+					
+					<TreeView x:Name="SetblockTree">
+						<TreeViewItem>
+							<TreeViewItem.Header>
+								<StackPanel Orientation="Horizontal">
+									<Image Source="assets/ui/doc_compound.png"
+												 Margin="5" />
+									<TextBlock Text="(root)" />
+								</StackPanel>
+							</TreeViewItem.Header>
+						</TreeViewItem>
+					</TreeView>
+				</Grid>
+			</TabItem>
 
 			<TabItem Header="/tellraw">
 				<Grid>

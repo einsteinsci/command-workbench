@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 
 using CommandGeneratorWPF.NBT;
+
 using Xceed.Utils;
 using Xceed.Wpf;
 using Xceed.Wpf.Toolkit;

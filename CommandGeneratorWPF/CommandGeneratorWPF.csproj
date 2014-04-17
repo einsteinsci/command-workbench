@@ -115,7 +115,9 @@
     <Compile Include="ItemCreationWindow.xaml.cs">
       <DependentUpon>ItemCreationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NBT\Block.Blocks.cs" />
     <Compile Include="NBT\Block.cs" />
+    <Compile Include="NBT\Block.Lists.cs" />
     <Compile Include="NBT\ItemFullTag.cs" />
     <Compile Include="NBT\TextRunTag.cs" />
     <Compile Include="QuotelessStringConverter.cs" />

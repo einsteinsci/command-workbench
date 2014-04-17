@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using CommandGeneratorWPF;
+
 namespace CommandGeneratorWPF.NBT
 {
 	public static class Extras
@@ -347,6 +349,40 @@ namespace CommandGeneratorWPF.NBT
 			}
 
 			return stuff.IndexOf<UIElement>(item, compareWith);
+		}
+
+		public static string WoodToString(WoodType wood, bool img)
+		{
+			string result = "Unknown";
+
+			switch (wood)
+			{
+			case WoodType.Oak:
+				result = "Oak";
+				break;
+			case WoodType.Spruce:
+				result = "Spruce";
+				break;
+			case WoodType.Birch:
+				result = "Birch";
+				break;
+			case WoodType.Jungle:
+				result = "Jungle";
+				break;
+			case WoodType.Acacia:
+				result = "Acacia";
+				break;
+			case WoodType.Darkwood:
+				result = "Dark Oak";
+				break;
+			}
+
+			if (img)
+			{
+				result = result.Replace(" ", "_");
+			}
+
+			return result;
 		}
 	}
 }
