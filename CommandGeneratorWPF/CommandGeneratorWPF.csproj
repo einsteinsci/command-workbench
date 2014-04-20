@@ -60,7 +60,7 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>DF279953D7EA652D5CFFC68EAF07CF28F86F36B5</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>16C9445F6195BFBE4D8D750DA27B687EC730E247</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>CommandGeneratorWPF_TemporaryKey.pfx</ManifestKeyFile>
@@ -117,7 +117,6 @@
     </Compile>
     <Compile Include="NBT\Block.Blocks.cs" />
     <Compile Include="NBT\Block.cs" />
-    <Compile Include="NBT\Block.Lists.cs" />
     <Compile Include="NBT\ItemFullTag.cs" />
     <Compile Include="NBT\TextRunTag.cs" />
     <Compile Include="QuotelessStringConverter.cs" />
@@ -185,9 +184,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\iconLarge.png" />

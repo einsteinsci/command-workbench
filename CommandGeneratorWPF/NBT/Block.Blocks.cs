@@ -243,7 +243,13 @@ namespace CommandGeneratorWPF.NBT
 			return new Block(23, "dispenser", "Dispenser", "Dispenser");
 		}
 
-		public static Block Log2(WoodType type);
-		public static Block Leaves2(WoodType type);
+		public static Block Log2(WoodType type)
+		{
+			throw new NotImplementedException();
+		}
+		public static Block Leaves2(WoodType type)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
