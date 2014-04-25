@@ -1,5 +1,9 @@
-﻿using System;
+﻿using CommandGeneratorWPF.NBT;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,16 +16,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Collections.ObjectModel;
-
-using CommandGeneratorWPF.NBT;
-
 using Xceed.Utils;
 using Xceed.Wpf;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Core;
-using Newtonsoft.Json;
-using System.IO;
 
 namespace CommandGeneratorWPF
 {
@@ -30,12 +28,14 @@ namespace CommandGeneratorWPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		bool isLoading = true;
+		private bool isLoading = true;
 
 		public MainWindow()
 		{
 			isLoading = true;
+
 			#region /give
+
 			GiveSelectedItem = InventoryItem.ItemDiamondSword();
 
 			ResetItemSelector();
@@ -44,14 +44,17 @@ namespace CommandGeneratorWPF
 			ResetCanPlaceOnSelector();
 
 			GiveItemTag_tag = new ItemTagTag();
-			#endregion
+
+			#endregion /give
 
 			#region /tellraw
+
 			tellrawSelector = Extras.GenerateSelector(tellrawSelector_onClosed);
 			tellrawHoverItemCreator = Extras.GenerateItemCreator(true,
 				tellrawHoverItemCreator_onClosed);
 			InitTellrawFields();
-			#endregion
+
+			#endregion /tellraw
 
 			//////////////////////////////
 			InitializeComponent();		//
@@ -59,6 +62,7 @@ namespace CommandGeneratorWPF
 			isLoading = false;
 
 			#region /give
+
 			fwIsLoading = false;
 			syncingMeta = false;
 
@@ -81,9 +85,11 @@ namespace CommandGeneratorWPF
 
 			RefreshSkullImg();
 			RefreshMaxDurabilityToolTip();
-			#endregion
+
+			#endregion /give
 
 			#region /tellraw
+
 			TellrawClickEventEnableCheck_Click(null, null);
 			TellrawHoverEventEnableCheck_Click(null, null);
 			TellrawTranslateEnableCheck_Click(null, null);
@@ -91,14 +97,15 @@ namespace CommandGeneratorWPF
 
 			TellrawClickEventEnableCheck.ToolTip = tellrawEventTooltipWarning;
 			TellrawHoverEventEnableCheck.ToolTip = tellrawEventTooltipWarning;
-			
+
 			TellrawPreviewScroll.Content = TextPreviewer.IncludeExtras(
 				tellrawTextTag, TellrawTextItem_OnSelected);
-			
-			TellrawRefreshNBT();
-			#endregion
 
-			RenderOptions.SetBitmapScalingMode(this, 
+			TellrawRefreshNBT();
+
+			#endregion /tellraw
+
+			RenderOptions.SetBitmapScalingMode(this,
 				BitmapScalingMode.NearestNeighbor);
 		}
 
@@ -135,10 +142,12 @@ namespace CommandGeneratorWPF
 				//System.Diagnostics.Debugger.Break(); // Do it. Now.
 			}
 		}
+
 		private InventoryItem _giveSelectedItem;
 
 		public InventoryItem CanDestroySelectedItem
 		{ get; private set; }
+
 		public InventoryItem CanPlaceOnSelectedItem
 		{ get; private set; }
 
@@ -182,6 +191,7 @@ namespace CommandGeneratorWPF
 				GiveDamageUpDown.ToolTip = tip;
 			}
 		}
+
 		private void ItemSelectWindow_Closed(object sender, EventArgs e)
 		{
 			SelectItem(itemSelect.CurrentSelection);
@@ -189,6 +199,7 @@ namespace CommandGeneratorWPF
 			ResetItemSelector();
 			GiveRefreshNBT();
 		}
+
 		private void SelectItem(InventoryItem selected)
 		{
 			syncingMeta = true;
@@ -215,6 +226,7 @@ namespace CommandGeneratorWPF
 			canDestroySelect = new ItemSelectWindow(true);
 			canDestroySelect.Closed += CanDestroySelectWindow_Closed;
 		}
+
 		private void CanDestroySelectWindow_Closed(object sender, EventArgs e)
 		{
 			InventoryItem item = canDestroySelect.CurrentSelection;
@@ -223,6 +235,7 @@ namespace CommandGeneratorWPF
 
 			ResetCanDestroySelector();
 		}
+
 		private void CanDestroySelectBtn_Click(object sender, RoutedEventArgs e)
 		{
 			if (!canDestroySelect.IsLoaded)
@@ -238,6 +251,7 @@ namespace CommandGeneratorWPF
 			canPlaceOnSelect = new ItemSelectWindow(true);
 			canPlaceOnSelect.Closed += CanPlaceOnSelectWindow_Closed;
 		}
+
 		private void CanPlaceOnSelectWindow_Closed(object sender, EventArgs e)
 		{
 			InventoryItem item = canPlaceOnSelect.CurrentSelection;
@@ -246,6 +260,7 @@ namespace CommandGeneratorWPF
 
 			ResetCanPlaceOnSelector();
 		}
+
 		private void CanPlaceOnSelectBtn_Click(object sender, RoutedEventArgs e)
 		{
 			if (!canPlaceOnSelect.IsLoaded)
@@ -261,6 +276,7 @@ namespace CommandGeneratorWPF
 			selectorWindow = new SelectorWindow();
 			selectorWindow.Closed += selectorWindow_Closed;
 		}
+
 		private void selectorWindow_Closed(object sender, EventArgs e)
 		{
 			if (selectorWindow.Result != "")
@@ -278,6 +294,7 @@ namespace CommandGeneratorWPF
 			ItemTagTag tag = GiveItemTag_tag;
 
 			#region display
+
 			if (DisplayTab.Visibility == Visibility.Visible)
 			{
 				tag.display = new ItemTagTag.DisplayTag();
@@ -312,9 +329,11 @@ namespace CommandGeneratorWPF
 			{
 				tag.display = null;
 			}
-			#endregion
+
+			#endregion display
 
 			#region general
+
 			if (GeneralTab.Visibility == Visibility.Visible)
 			{
 				tag.Unbreakable = (UnbreakableCheck.IsChecked ?? false).ToByte();
@@ -344,9 +363,11 @@ namespace CommandGeneratorWPF
 					tag.CanDestroy = null;
 				}
 			}
-			#endregion
+
+			#endregion general
 
 			#region ench
+
 			if (EnchList != null)
 			{
 				if (EnchList.HasItems)
@@ -390,9 +411,11 @@ namespace CommandGeneratorWPF
 					tag.RepairCost = 1;
 				}
 			}
-			#endregion
+
+			#endregion ench
 
 			#region potion
+
 			if (PotionTab != null)
 			{
 				if (PotionTab.Visibility == System.Windows.Visibility.Visible)
@@ -415,9 +438,11 @@ namespace CommandGeneratorWPF
 					tag.CustomPotionEffects = null;
 				}
 			}
-			#endregion
+
+			#endregion potion
 
 			#region book
+
 			if (BookTab != null && BookPagesList != null)
 			{
 				if (BookTab.Visibility == System.Windows.Visibility.Visible)
@@ -443,9 +468,11 @@ namespace CommandGeneratorWPF
 					tag.pages = null;
 				}
 			}
-			#endregion
+
+			#endregion book
 
 			#region FwStar
+
 			if (FwStarTab != null && FwStarMainColorsList != null)
 			{
 				if (FwStarTab.Visibility == System.Windows.Visibility.Visible)
@@ -454,7 +481,7 @@ namespace CommandGeneratorWPF
 
 					tag.Explosion.Flicker = (FwStarFlickerCheck.IsChecked ?? false).ToByte();
 					tag.Explosion.Trail = (FwStarTrailCheck.IsChecked ?? false).ToByte();
-					
+
 					tag.Explosion.Type = (byte)FwStarShapeCombo.SelectedIndex;
 
 					if (FwStarMainColorsList.HasItems)
@@ -488,9 +515,11 @@ namespace CommandGeneratorWPF
 					tag.Explosion = null;
 				}
 			}
-			#endregion
+
+			#endregion FwStar
 
 			#region FwRocket
+
 			if (FwRocketTab != null && FwRocketExplosionsList != null)
 			{
 				if (FwRocketTab.Visibility == System.Windows.Visibility.Visible)
@@ -519,9 +548,11 @@ namespace CommandGeneratorWPF
 					tag.Fireworks = null;
 				}
 			}
-			#endregion
+
+			#endregion FwRocket
 
 			#region other
+
 			if (OtherTab != null)
 			{
 				if (OtherTab.Visibility == System.Windows.Visibility.Visible)
@@ -556,7 +587,8 @@ namespace CommandGeneratorWPF
 					tag.map_is_scaling = null;
 				}
 			}
-			#endregion
+
+			#endregion other
 
 			GiveItemTag_tag = tag;
 
@@ -570,6 +602,7 @@ namespace CommandGeneratorWPF
 			InventoryItem item = GiveSelectedItem;
 
 			#region display
+
 			if (!GiveSelectedItem.IsLeatherArmor)
 			{
 				EnableCustomColorToggle.IsEnabled = false;
@@ -579,9 +612,11 @@ namespace CommandGeneratorWPF
 			{
 				EnableCustomColorToggle.IsEnabled = true;
 			}
-			#endregion
+
+			#endregion display
 
 			#region general
+
 			if (item.IsDurableAble)
 			{
 				UnbreakableCheck.IsEnabled = true;
@@ -614,9 +649,11 @@ namespace CommandGeneratorWPF
 				CanPlaceOnPanel.IsEnabled = false;
 				CanPlaceOnItemsList.Items.Clear();
 			}
-			#endregion
+
+			#endregion general
 
 			#region ench
+
 			if (item.ShortName == "enchanted_book")
 			{
 				EnchTypeBtn.IsEnabled = true;
@@ -642,9 +679,11 @@ namespace CommandGeneratorWPF
 			{
 				EnchRepairCost.IsEnabled = false;
 			}
-			#endregion
+
+			#endregion ench
 
 			#region potion
+
 			if (item.IsPotion)
 			{
 				PotionTab.Visibility = System.Windows.Visibility.Visible;
@@ -653,9 +692,11 @@ namespace CommandGeneratorWPF
 			{
 				PotionTab.Visibility = System.Windows.Visibility.Collapsed;
 			}
-			#endregion
+
+			#endregion potion
 
 			#region book
+
 			if (item.IsBook)
 			{
 				BookTab.Visibility = System.Windows.Visibility.Visible;
@@ -675,9 +716,11 @@ namespace CommandGeneratorWPF
 			{
 				BookTab.Visibility = System.Windows.Visibility.Collapsed;
 			}
-			#endregion
+
+			#endregion book
 
 			#region FwStar
+
 			if (item.IsFireworksStar)
 			{
 				FwStarTab.Visibility = System.Windows.Visibility.Visible;
@@ -686,9 +729,11 @@ namespace CommandGeneratorWPF
 			{
 				FwStarTab.Visibility = System.Windows.Visibility.Collapsed;
 			}
-			#endregion
+
+			#endregion FwStar
 
 			#region FwRocket
+
 			if (item.IsFireworksRocket)
 			{
 				FwRocketTab.Visibility = System.Windows.Visibility.Visible;
@@ -697,9 +742,11 @@ namespace CommandGeneratorWPF
 			{
 				FwRocketTab.Visibility = System.Windows.Visibility.Collapsed;
 			}
-			#endregion
+
+			#endregion FwRocket
 
 			#region other
+
 			if (item.IsPlayerSkull || item.IsMap)
 			{
 				OtherTab.Visibility = System.Windows.Visibility.Visible;
@@ -729,7 +776,8 @@ namespace CommandGeneratorWPF
 			{
 				OtherTab.Visibility = System.Windows.Visibility.Collapsed;
 			}
-			#endregion
+
+			#endregion other
 
 			if (!syncingMeta)
 			{
@@ -743,7 +791,7 @@ namespace CommandGeneratorWPF
 		private void UpdateEnchantmentList()
 		{
 			List<ItemTagTag.EnchantmentTag> tags;
-			
+
 			if ((EnchShowAllCheck.IsChecked ?? false) ||
 				EnchTypeBtn.Tag as string == "book")
 			{
@@ -800,6 +848,7 @@ namespace CommandGeneratorWPF
 
 			itemSelect.Activate();
 		}
+
 		private void SelectorBtn_Click(object sender, RoutedEventArgs e)
 		{
 			if (!selectorWindow.IsLoaded)
@@ -851,12 +900,14 @@ namespace CommandGeneratorWPF
 		}
 
 		#region display
+
 		private void LoreAddBtn_Click(object sender, RoutedEventArgs e)
 		{
 			LoreList.Items.Add(LoreLineBox.Text);
 			LoreLineBox.Text = "";
 			GiveRefreshNBT();
 		}
+
 		private void LoreRemoveBtn_Click(object sender, RoutedEventArgs e)
 		{
 			LoreList.Items.Remove(LoreList.SelectedItem);
@@ -868,13 +919,14 @@ namespace CommandGeneratorWPF
 			CustomColorStack.IsEnabled = true;
 			GiveRefreshNBT();
 		}
+
 		private void EnableCustomColorToggle_Unchecked(object sender, RoutedEventArgs e)
 		{
 			CustomColorStack.IsEnabled = false;
 			GiveRefreshNBT();
 		}
 
-		private void DisplayColorCanvas_SelectedColorChanged(object sender, 
+		private void DisplayColorCanvas_SelectedColorChanged(object sender,
 			RoutedPropertyChangedEventArgs<Color> e)
 		{
 			Color c = e.NewValue;
@@ -889,14 +941,17 @@ namespace CommandGeneratorWPF
 		{
 			GiveRefreshNBT();
 		}
-		#endregion
+
+		#endregion display
 
 		#region general
+
 		private void CanDestroyAddBtn_Click(object sender, RoutedEventArgs e)
 		{
 			CanDestroyItemsList.Items.Add(CanDestroySelectedItem);
 			GiveRefreshNBT();
 		}
+
 		private void CanDestroyRemoveBtn_Click(object sender, RoutedEventArgs e)
 		{
 			CanDestroyItemsList.Items.Remove(CanDestroyItemsList.SelectedItem as InventoryItem);
@@ -908,6 +963,7 @@ namespace CommandGeneratorWPF
 			CanPlaceOnItemsList.Items.Add(CanPlaceOnSelectedItem);
 			GiveRefreshNBT();
 		}
+
 		private void CanPlaceOnRemoveBtn_Click(object sender, RoutedEventArgs e)
 		{
 			CanPlaceOnItemsList.Items.Remove(CanPlaceOnItemsList.SelectedItem as InventoryItem);
@@ -935,9 +991,11 @@ namespace CommandGeneratorWPF
 				GiveRefreshCommand();
 			}
 		}
-		#endregion
+
+		#endregion general
 
 		#region ench
+
 		private void EnchTypeBtn_Click(object sender, RoutedEventArgs e)
 		{
 			if (EnchTypeBtn.Tag as string == "std")
@@ -962,11 +1020,12 @@ namespace CommandGeneratorWPF
 		{
 			short id = (short)((ComboBoxItem)EnchantmentCombo.SelectedItem).Tag;
 
-			EnchList.Items.Add(new ItemTagTag.EnchantmentTag(id, 
+			EnchList.Items.Add(new ItemTagTag.EnchantmentTag(id,
 				(short)EnchLevelUpDn.Value.Value));
 
 			GiveRefreshNBT();
 		}
+
 		private void EnchRemoveBtn_Click(object sender, RoutedEventArgs e)
 		{
 			EnchList.Items.Remove(EnchList.SelectedItem);
@@ -978,14 +1037,16 @@ namespace CommandGeneratorWPF
 			UpdateEnchantmentList();
 		}
 
-		private void EnchRepairCost_ValueChanged(object sender, 
+		private void EnchRepairCost_ValueChanged(object sender,
 			RoutedPropertyChangedEventArgs<object> e)
 		{
 			GiveRefreshNBT();
 		}
-		#endregion
+
+		#endregion ench
 
 		#region potion
+
 		private void PotionBaseStrBtn_Click(object sender, RoutedEventArgs e)
 		{
 			if (PotionBaseStrBtn.Content as string == "I")
@@ -1062,8 +1123,8 @@ namespace CommandGeneratorWPF
 				return;
 			}
 
-			// All of these are only one strength through damage values:
-			// Fire res,  nite-vis, slowness,  water br., invisible, water bottle
+			// All of these are only one strength through damage values: Fire res,
+			// nite-vis, slowness, water br., invisible, water bottle
 			if (b == 3 || b == 6 || b == 10 || b == 13 || b == 14 || b == 0)
 			{
 				PotionBaseStrBtn.IsEnabled = false;
@@ -1074,8 +1135,8 @@ namespace CommandGeneratorWPF
 				PotionBaseStrBtn.IsEnabled = true;
 			}
 
-			// Healing (5) and harming (6) cannot be extended through damage values.
-			// Water bottles (0) have no effect to extend.
+			// Healing (5) and harming (6) cannot be extended through damage values. Water
+			// bottles (0) have no effect to extend.
 			if (b == 5 || b == 12 || b == 0)
 			{
 				PotionBaseExtendedCheck.IsEnabled = false;
@@ -1105,7 +1166,7 @@ namespace CommandGeneratorWPF
 			PotionGenerateDamageValue();
 		}
 
-		private void PotionDurationUpDown_ValueChanged(object sender, 
+		private void PotionDurationUpDown_ValueChanged(object sender,
 			RoutedPropertyChangedEventArgs<object> e)
 		{
 			float ticks = (PotionDurationUpDown.Value ?? 0.0f) * 20.0f;
@@ -1132,6 +1193,7 @@ namespace CommandGeneratorWPF
 
 			GiveRefreshNBT();
 		}
+
 		private void PotionCustomRemoveBtn_Click(object sender, RoutedEventArgs e)
 		{
 			PotionList.Items.Remove(PotionList.SelectedItem);
@@ -1144,9 +1206,11 @@ namespace CommandGeneratorWPF
 
 			GiveRefreshNBT();
 		}
-		#endregion
+
+		#endregion potion
 
 		#region book
+
 		private void BookPagesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (BookPagesList.SelectedIndex == -1)
@@ -1158,7 +1222,7 @@ namespace CommandGeneratorWPF
 
 			BookCurrentPageBox.Text = page;
 
-			BookPageNumberBox.Text = (BookPagesList.SelectedIndex + 1).ToString() + 
+			BookPageNumberBox.Text = (BookPagesList.SelectedIndex + 1).ToString() +
 				" of " + BookPagesList.Items.Count;
 		}
 
@@ -1200,6 +1264,7 @@ namespace CommandGeneratorWPF
 
 			BookCurrentPageBox.Focus();
 		}
+
 		private void BookDeletePageBtn_Click(object sender, RoutedEventArgs e)
 		{
 			BookPagesList.Items.Remove(BookPagesList.SelectedItem);
@@ -1218,18 +1283,22 @@ namespace CommandGeneratorWPF
 		{
 			GiveRefreshNBT();
 		}
+
 		private void BookAuthorBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			GiveRefreshNBT();
 		}
-		private void BookGenerationCombo_SelectionChanged(object sender, 
+
+		private void BookGenerationCombo_SelectionChanged(object sender,
 			SelectionChangedEventArgs e)
 		{
 			GiveRefreshNBT();
 		}
-		#endregion
+
+		#endregion book
 
 		#region FwStar
+
 		private void FwStarMainColorsAddBtn_Click(object sender, RoutedEventArgs e)
 		{
 			Color c = Color.FromRgb(FwStarColorCanvas.R,
@@ -1244,6 +1313,7 @@ namespace CommandGeneratorWPF
 
 			GiveRefreshNBT();
 		}
+
 		private void FwStarMainColorsRemoveBtn_Click(object sender, RoutedEventArgs e)
 		{
 			FwStarMainColorsList.Items.Remove(
@@ -1275,7 +1345,7 @@ namespace CommandGeneratorWPF
 			GiveRefreshNBT();
 		}
 
-		private void FwStarColorCanvas_SelectedColorChanged(object sender, 
+		private void FwStarColorCanvas_SelectedColorChanged(object sender,
 			RoutedPropertyChangedEventArgs<Color> e)
 		{
 			int col = Extras.rgbToInt(e.NewValue.R, e.NewValue.G, e.NewValue.B);
@@ -1283,7 +1353,7 @@ namespace CommandGeneratorWPF
 			FwStarColorBox.Text = col.ToString();
 		}
 
-		private void FwStarShapeCombo_SelectionChanged(object sender, 
+		private void FwStarShapeCombo_SelectionChanged(object sender,
 			SelectionChangedEventArgs e)
 		{
 			GiveRefreshNBT();
@@ -1293,16 +1363,17 @@ namespace CommandGeneratorWPF
 		{
 			GiveRefreshNBT();
 		}
-		#endregion
+
+		#endregion FwStar
 
 		#region FwRocket
 
 		//FLAG
-		bool fwIsLoading;
+		private bool fwIsLoading;
 
 		private void EnableDisableSelectedRocket()
 		{
-			if ((!FwRocketExplosionsList.HasItems) || 
+			if ((!FwRocketExplosionsList.HasItems) ||
 				FwRocketExplosionsList.SelectedIndex == -1)
 			{
 				FwRocketSelectedExplosionStack.IsEnabled = false;
@@ -1324,7 +1395,7 @@ namespace CommandGeneratorWPF
 			}
 
 			FireworksStarDisplayTag e =
-				FwRocketExplosionsList.SelectedItem 
+				FwRocketExplosionsList.SelectedItem
 				as FireworksStarDisplayTag;
 
 			FireworksStarDisplayTag old = e;
@@ -1420,6 +1491,7 @@ namespace CommandGeneratorWPF
 
 			RefreshSelectedExplosion();
 		}
+
 		private void FwRocketMainColorsRemoveBtn_Click(object sender, RoutedEventArgs e)
 		{
 			FwRocketMainColorsList.Items.Remove(
@@ -1441,6 +1513,7 @@ namespace CommandGeneratorWPF
 
 			RefreshSelectedExplosion();
 		}
+
 		private void FwRocketFadeColorsRemoveBtn_Click(object sender, RoutedEventArgs e)
 		{
 			FwRocketFadeColorsList.Items.Remove(
@@ -1462,6 +1535,7 @@ namespace CommandGeneratorWPF
 
 			GiveRefreshNBT();
 		}
+
 		private void FwRocketExplosionDeleteBtn_Click(object sender, RoutedEventArgs e)
 		{
 			FwRocketExplosionsList.Items.Remove(
@@ -1481,7 +1555,7 @@ namespace CommandGeneratorWPF
 			GiveRefreshNBT();
 		}
 
-		private void FwRocketExplosionsList_SelectionChanged(object sender, 
+		private void FwRocketExplosionsList_SelectionChanged(object sender,
 			SelectionChangedEventArgs e)
 		{
 			if (FwRocketExplosionsList.SelectedIndex == -1)
@@ -1512,21 +1586,22 @@ namespace CommandGeneratorWPF
 			RefreshSelectedExplosion();
 		}
 
-		private void FwRocketShapeCombo_SelectionChanged(object sender, 
+		private void FwRocketShapeCombo_SelectionChanged(object sender,
 			SelectionChangedEventArgs e)
 		{
 			RefreshSelectedExplosion();
 		}
 
-		private void FwRocketFlightUpDown_ValueChanged(object sender, 
+		private void FwRocketFlightUpDown_ValueChanged(object sender,
 			RoutedPropertyChangedEventArgs<object> e)
 		{
 			GiveRefreshNBT();
 		}
 
-		#endregion
+		#endregion FwRocket
 
 		#region other
+
 		private void RefreshSkullImg()
 		{
 			if (SkullPlayerNameBox.Text == "")
@@ -1537,7 +1612,7 @@ namespace CommandGeneratorWPF
 			SkullProgress.Visibility = System.Windows.Visibility.Visible;
 
 			BitmapImage bmp = new BitmapImage(new Uri(
-						 "http://s3.amazonaws.com/MinecraftSkins/" + 
+						 "http://s3.amazonaws.com/MinecraftSkins/" +
 						 SkullPlayerNameBox.Text + ".png"));
 			Int32Rect face = new Int32Rect(8, 8, 8, 8);
 			Int32Rect top = new Int32Rect(40, 8, 8, 8);
@@ -1581,7 +1656,8 @@ namespace CommandGeneratorWPF
 			GiveSelectedItem.Metadata = (short)(MapIdUpDown.Value ?? 0);
 			ItemMetaTxt.Text = GiveSelectedItem.Metadata.ToString();
 		}
-		#endregion
+
+		#endregion other
 
 		private void GiveCommandOutputBox_MouseEnter(object sender, MouseEventArgs e)
 		{
@@ -1599,26 +1675,27 @@ namespace CommandGeneratorWPF
 			Clipboard.SetData(DataFormats.Text, GiveCommandOutputBox.Text);
 		}
 
-		#endregion
+		#endregion /give
 
 		#region /tellraw
-		SelectorWindow tellrawSelector;
 
-		TextRunTag tellrawTextTag;
-		int tellrawSelectedIndex;
+		private SelectorWindow tellrawSelector;
 
-		bool tellrawIsLoading;
+		private TextRunTag tellrawTextTag;
+		private int tellrawSelectedIndex;
 
-		ItemFullTag tellrawSelectedHoverItem;
-		//	const string tellrawChatTooltip = 
-		//		"Commands must be prefixed with a slash, " + 
-		//		"otherwise this will merely be entered as chat.";
-		const string tellrawEventTooltipWarning =
+		private bool tellrawIsLoading;
+
+		private ItemFullTag tellrawSelectedHoverItem;
+
+		// const string tellrawChatTooltip = "Commands must be prefixed with a slash, " +
+		// "otherwise this will merely be entered as chat.";
+		private const string tellrawEventTooltipWarning =
 			"Warning: Events in first text will be inherited " +
 			"by all child (non-first) texts.\n To prevent this, put the " +
 			"event(s) in a second text, with blank text as the first.";
 
-		ItemCreationWindow tellrawHoverItemCreator;
+		private ItemCreationWindow tellrawHoverItemCreator;
 
 		private void InitTellrawFields()
 		{
@@ -1651,14 +1728,17 @@ namespace CommandGeneratorWPF
 				tellrawTextTag.color = (TextColor)TellrawTextColorCombo.SelectedIndex;
 
 				#region formatting
+
 				tellrawTextTag.bold = TellrawBoldToggle.IsChecked ?? false;
 				tellrawTextTag.italic = TellrawItalicToggle.IsChecked ?? false;
 				tellrawTextTag.underline = TellrawUnderlineToggle.IsChecked ?? false;
 				tellrawTextTag.strikethrough = TellrawStrikethroughToggle.IsChecked ?? false;
 				tellrawTextTag.obfuscated = TellrawObfuscatedToggle.IsChecked ?? false;
-				#endregion
+
+				#endregion formatting
 
 				#region clickEvent
+
 				if (TellrawClickEventGroup.IsEnabled)
 				{
 					tellrawTextTag.clickEvent = new TextRunTag.ClickEvent(
@@ -1669,9 +1749,11 @@ namespace CommandGeneratorWPF
 				{
 					tellrawTextTag.clickEvent = null;
 				}
-				#endregion
+
+				#endregion clickEvent
 
 				#region hoverEvent
+
 				if (TellrawHoverEventGroup.IsEnabled)
 				{
 					tellrawTextTag.hoverEvent = new TextRunTag.HoverEvent(
@@ -1685,9 +1767,11 @@ namespace CommandGeneratorWPF
 				{
 					tellrawTextTag.hoverEvent = null;
 				}
-				#endregion
+
+				#endregion hoverEvent
 
 				#region translate
+
 				if (TellrawTranslateGroup.IsEnabled)
 				{
 					tellrawTextTag.translate = TellrawTranslateIdBox.Text;
@@ -1708,9 +1792,11 @@ namespace CommandGeneratorWPF
 					tellrawTextTag.translate = "";
 					tellrawTextTag.with = null;
 				}
-				#endregion
+
+				#endregion translate
 
 				#region scoreboard
+
 				if (TellrawScoreboardGroup.IsEnabled)
 				{
 					TextRunTag.TextScoreboard score = new TextRunTag.TextScoreboard();
@@ -1724,7 +1810,8 @@ namespace CommandGeneratorWPF
 				{
 					tellrawTextTag.score = null;
 				}
-				#endregion
+
+				#endregion scoreboard
 			}
 			else
 			{
@@ -1737,23 +1824,26 @@ namespace CommandGeneratorWPF
 				{
 					tellrawTextTag.extra[tellrawSelectedIndex - 1].text = "";
 				}
-				tellrawTextTag.extra[tellrawSelectedIndex - 1].color = 
+				tellrawTextTag.extra[tellrawSelectedIndex - 1].color =
 					(TextColor)TellrawTextColorCombo.SelectedIndex;
 
 				#region formatting
-				tellrawTextTag.extra[tellrawSelectedIndex - 1].bold = 
+
+				tellrawTextTag.extra[tellrawSelectedIndex - 1].bold =
 					TellrawBoldToggle.IsChecked ?? false;
-				tellrawTextTag.extra[tellrawSelectedIndex - 1].italic = 
+				tellrawTextTag.extra[tellrawSelectedIndex - 1].italic =
 					TellrawItalicToggle.IsChecked ?? false;
-				tellrawTextTag.extra[tellrawSelectedIndex - 1].underline = 
+				tellrawTextTag.extra[tellrawSelectedIndex - 1].underline =
 					TellrawUnderlineToggle.IsChecked ?? false;
-				tellrawTextTag.extra[tellrawSelectedIndex - 1].strikethrough = 
+				tellrawTextTag.extra[tellrawSelectedIndex - 1].strikethrough =
 					TellrawStrikethroughToggle.IsChecked ?? false;
-				tellrawTextTag.extra[tellrawSelectedIndex - 1].obfuscated = 
+				tellrawTextTag.extra[tellrawSelectedIndex - 1].obfuscated =
 					TellrawObfuscatedToggle.IsChecked ?? false;
-				#endregion
+
+				#endregion formatting
 
 				#region clickEvent
+
 				if (TellrawClickEventGroup.IsEnabled)
 				{
 					tellrawTextTag.extra[tellrawSelectedIndex - 1].clickEvent =
@@ -1765,12 +1855,14 @@ namespace CommandGeneratorWPF
 				{
 					tellrawTextTag.extra[tellrawSelectedIndex - 1].clickEvent = null;
 				}
-				#endregion
+
+				#endregion clickEvent
 
 				#region hoverEvent
+
 				if (TellrawHoverEventGroup.IsEnabled)
 				{
-					tellrawTextTag.extra[tellrawSelectedIndex - 1].hoverEvent = 
+					tellrawTextTag.extra[tellrawSelectedIndex - 1].hoverEvent =
 						new TextRunTag.HoverEvent((HoverCommand)
 						TellrawHoverActionCombo.SelectedIndex,
 						TellrawHoverActionTextBox.Text);
@@ -1782,15 +1874,17 @@ namespace CommandGeneratorWPF
 				{
 					tellrawTextTag.extra[tellrawSelectedIndex - 1].hoverEvent = null;
 				}
-				#endregion
+
+				#endregion hoverEvent
 
 				#region translate
+
 				if (TellrawTranslateGroup.IsEnabled)
 				{
-					tellrawTextTag.extra[tellrawSelectedIndex - 1].translate = 
+					tellrawTextTag.extra[tellrawSelectedIndex - 1].translate =
 						TellrawTranslateIdBox.Text;
 
-					tellrawTextTag.extra[tellrawSelectedIndex - 1].with = 
+					tellrawTextTag.extra[tellrawSelectedIndex - 1].with =
 						new List<string>();
 					foreach (string s in TellrawTranslateArgListBox.Items)
 					{
@@ -1807,9 +1901,11 @@ namespace CommandGeneratorWPF
 					tellrawTextTag.extra[tellrawSelectedIndex - 1].translate = "";
 					tellrawTextTag.extra[tellrawSelectedIndex - 1].with = null;
 				}
-				#endregion
+
+				#endregion translate
 
 				#region scoreboard
+
 				if (TellrawScoreboardGroup.IsEnabled)
 				{
 					TextRunTag.TextScoreboard score = new TextRunTag.TextScoreboard();
@@ -1823,7 +1919,8 @@ namespace CommandGeneratorWPF
 				{
 					tellrawTextTag.extra[tellrawSelectedIndex - 1].score = null;
 				}
-				#endregion
+
+				#endregion scoreboard
 			}
 
 			TellrawPreviewScroll.Content = TextPreviewer.IncludeExtras(
@@ -1870,6 +1967,7 @@ namespace CommandGeneratorWPF
 			TellrawObfuscatedToggle.IsChecked = tag.strikethrough;
 
 			#region clickEvent
+
 			if (tag.clickEvent != null)
 			{
 				TellrawClickEventEnableCheck.IsChecked = true;
@@ -1886,9 +1984,11 @@ namespace CommandGeneratorWPF
 				TellrawClickActionCombo.SelectedIndex = 0;
 				TellrawClickActionBox.Text = "";
 			}
-			#endregion
+
+			#endregion clickEvent
 
 			#region hoverEvent
+
 			if (tag.hoverEvent != null)
 			{
 				TellrawHoverEventEnableCheck.IsChecked = true;
@@ -1905,9 +2005,11 @@ namespace CommandGeneratorWPF
 				TellrawHoverActionCombo.SelectedIndex = 0;
 				TellrawHoverActionTextBox.Text = "";
 			}
-			#endregion
+
+			#endregion hoverEvent
 
 			#region translate
+
 			if (tag.translate != "")
 			{
 				TellrawTranslateEnableCheck.IsChecked = true;
@@ -1921,9 +2023,11 @@ namespace CommandGeneratorWPF
 					TellrawTranslateArgListBox.Items.Add(s);
 				}
 			}
-			#endregion
+
+			#endregion translate
 
 			#region scoreboard
+
 			if (tag.score != null)
 			{
 				TellrawScoreboardEnableCheck.IsChecked = true;
@@ -1932,7 +2036,8 @@ namespace CommandGeneratorWPF
 				TellrawScoreboardObjBox.Text = tag.score.objective;
 				TellrawScoreboardPlayerBox.Text = tag.score.name;
 			}
-			#endregion
+
+			#endregion scoreboard
 
 			tellrawIsLoading = false;
 		}
@@ -1997,12 +2102,13 @@ namespace CommandGeneratorWPF
 			}
 			else
 			{
-				tellrawTextTag.extra[tellrawSelectedIndex - 1].bold = 
+				tellrawTextTag.extra[tellrawSelectedIndex - 1].bold =
 					TellrawBoldToggle.IsChecked ?? false;
 			}
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawItalicToggle_Click(object sender, RoutedEventArgs e)
 		{
 			if (tellrawSelectedIndex == 0)
@@ -2017,6 +2123,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawUnderlineToggle_Click(object sender, RoutedEventArgs e)
 		{
 			if (tellrawSelectedIndex == 0)
@@ -2031,6 +2138,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawStrikethroughToggle_Click(object sender, RoutedEventArgs e)
 		{
 			if (tellrawSelectedIndex == 0)
@@ -2045,6 +2153,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawObfuscatedToggle_Click(object sender, RoutedEventArgs e)
 		{
 			if (tellrawSelectedIndex == 0)
@@ -2059,6 +2168,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawTextColorCombo_SelectionChanged(
 			object sender, SelectionChangedEventArgs e)
 		{
@@ -2119,6 +2229,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawHoverEventEnableCheck_Click(object sender, RoutedEventArgs e)
 		{
 			TellrawHoverEventGroup.IsEnabled =
@@ -2129,6 +2240,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawTranslateEnableCheck_Click(object sender, RoutedEventArgs e)
 		{
 			TellrawTranslateGroup.IsEnabled =
@@ -2149,6 +2261,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawScoreboardEnableCheck_Click(object sender, RoutedEventArgs e)
 		{
 			TellrawScoreboardGroup.IsEnabled =
@@ -2183,12 +2296,15 @@ namespace CommandGeneratorWPF
 			case 0:
 				TellrawClickActionValueHeader.Content = "Command / Chat:";
 				break;
+
 			case 1:
 				TellrawClickActionValueHeader.Content = "Command / Chat:";
 				break;
+
 			case 2:
 				TellrawClickActionValueHeader.Content = "URL:";
 				break;
+
 			default:
 				TellrawClickActionValueHeader.Content = "Something...";
 				break;
@@ -2196,6 +2312,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawHoverActionCombo_SelectionChanged(
 			object sender, SelectionChangedEventArgs e)
 		{
@@ -2207,19 +2324,20 @@ namespace CommandGeneratorWPF
 			switch ((HoverCommand)TellrawHoverActionCombo.SelectedIndex)
 			{
 			case HoverCommand.show_text:
-				TellrawHoverActionValueHeader.Visibility = 
+				TellrawHoverActionValueHeader.Visibility =
 					System.Windows.Visibility.Visible;
 				TellrawHoverActionValueHeader.Content = "Text:";
 
 				TellrawHoverActionItemMakerBtn.Visibility =
 					System.Windows.Visibility.Collapsed;
 
-				TellrawHoverActionEntityMakerBtn.Visibility = 
+				TellrawHoverActionEntityMakerBtn.Visibility =
 					System.Windows.Visibility.Collapsed;
 
 				TellrawHoverActionTextBox.IsReadOnly = false;
 				TellrawHoverActionTextBox.Text = "Hello!";
 				break;
+
 			case HoverCommand.show_item:
 				TellrawHoverActionValueHeader.Visibility =
 					System.Windows.Visibility.Collapsed;
@@ -2233,6 +2351,7 @@ namespace CommandGeneratorWPF
 				TellrawHoverActionTextBox.IsReadOnly = true;
 				TellrawHoverActionTextBox.Text = "{id:\"diamond_block\"}";
 				break;
+
 			case HoverCommand.show_achievement:
 				TellrawHoverActionValueHeader.Visibility =
 					System.Windows.Visibility.Visible;
@@ -2247,6 +2366,7 @@ namespace CommandGeneratorWPF
 				TellrawHoverActionTextBox.IsReadOnly = false;
 				TellrawHoverActionTextBox.Text = "achievement.openInventory";
 				break;
+
 			case HoverCommand.show_entity:
 				TellrawHoverActionValueHeader.Visibility =
 					System.Windows.Visibility.Collapsed;
@@ -2260,6 +2380,7 @@ namespace CommandGeneratorWPF
 				TellrawHoverActionTextBox.IsReadOnly = true;
 				TellrawHoverActionTextBox.Text = "{id:50}";
 				break;
+
 			default:
 				System.Diagnostics.Debugger.Log(1, "",
 					"Invalid HoverCommand Selection\n");
@@ -2283,17 +2404,13 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawTextRemoveBtn_Click(object sender, RoutedEventArgs e)
 		{
-			//	if (TellrawPreviewPanel.Children.Count != 0)
-			//	{
-			//		TellrawPreviewPanel.Children.RemoveAt(tellrawSelectedIndex);
-			//		tellrawSelectedIndex = Math.Max(TellrawPreviewPanel.Children.Count - 1, 0);
-			//	}
-			//	else
-			//	{
-			//		tellrawSelectedIndex = 0;
-			//	}
+			// if (TellrawPreviewPanel.Children.Count != 0) {
+			// TellrawPreviewPanel.Children.RemoveAt(tellrawSelectedIndex);
+			// tellrawSelectedIndex = Math.Max(TellrawPreviewPanel.Children.Count - 1, 0);
+			// } else { tellrawSelectedIndex = 0; }
 
 			if (tellrawSelectedIndex == 0)
 			{
@@ -2341,11 +2458,8 @@ namespace CommandGeneratorWPF
 			int spot = (int)block.Tag;
 			tellrawSelectedIndex = Math.Max(spot, 0);
 
-			//	foreach (TextBlock t in TellrawPreviewPanel.Children)
-			//	{
-			//		t.Background = new SolidColorBrush(Colors.Transparent);
-			//	}
-			//	block.Background = new SolidColorBrush(Colors.DarkBlue);
+			// foreach (TextBlock t in TellrawPreviewPanel.Children) { t.Background = new
+			// SolidColorBrush(Colors.Transparent); } block.Background = new SolidColorBrush(Colors.DarkBlue);
 
 			if (tellrawSelectedIndex == 0)
 			{
@@ -2384,16 +2498,19 @@ namespace CommandGeneratorWPF
 		{
 			tellrawHoverItemCreator.Show();
 		}
+
 		private void TellrawHoverActionTextBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			TellrawRefreshNBT();
 		}
 
 		private bool isLoadingTellrawTranslateArg = false;
+
 		private void TellrawTranslateIdBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawTranslateArgBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			if (TellrawTranslateArgListBox.SelectedIndex == -1 ||
@@ -2411,6 +2528,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawTranslateArgAddBox_Click(object sender, RoutedEventArgs e)
 		{
 			isLoadingTellrawTranslateArg = true;
@@ -2423,6 +2541,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawTranslateArgRemoveBox_Click(object sender, RoutedEventArgs e)
 		{
 			if (TellrawTranslateArgListBox.SelectedIndex == -1)
@@ -2438,6 +2557,7 @@ namespace CommandGeneratorWPF
 
 			TellrawRefreshNBT();
 		}
+
 		private void TellrawTranslateArgListBox_SelectionChanged(
 			object sender, SelectionChangedEventArgs e)
 		{
@@ -2484,6 +2604,7 @@ namespace CommandGeneratorWPF
 				TellrawCommandOutputBox.SelectAll();
 			}
 		}
+
 		private void TellrawCommandOutputBox_MouseLeave(object sender, MouseEventArgs e)
 		{
 			if (this.IsActive)
@@ -2501,17 +2622,18 @@ namespace CommandGeneratorWPF
 		{
 			Clipboard.SetData(DataFormats.Text, TellrawCommandOutputBox.Text);
 		}
-		#endregion
+
+		#endregion /tellraw
 	}
 
-	class FireworksStarDisplayTag
+	internal class FireworksStarDisplayTag
 	{
 		public bool Flicker;
 		public bool Trail;
 		public byte Shape;
 		public List<Color> Main;
 		public List<Color> Fade;
-	
+
 		public FireworksStarDisplayTag()
 		{
 			Flicker = false;
@@ -2520,20 +2642,20 @@ namespace CommandGeneratorWPF
 			Main = new List<Color>();
 			Fade = new List<Color>();
 		}
-	
+
 		public override string ToString()
 		{
 			return ToTag().ToString();
 		}
-	
+
 		public ItemTagTag.FireworksStarTag ToTag()
 		{
 			ItemTagTag.FireworksStarTag tag = new ItemTagTag.FireworksStarTag();
-	
+
 			tag.Flicker = Flicker.ToByte();
 			tag.Trail = Trail.ToByte();
 			tag.Type = Shape;
-	
+
 			if (Main.Count != 0)
 			{
 				tag.Colors = new List<int>();
@@ -2546,7 +2668,7 @@ namespace CommandGeneratorWPF
 			{
 				tag.Colors = null;
 			}
-	
+
 			if (Fade.Count != 0)
 			{
 				tag.FadeColors = new List<int>();
@@ -2559,7 +2681,7 @@ namespace CommandGeneratorWPF
 			{
 				tag.FadeColors = null;
 			}
-	
+
 			return tag;
 		}
 	}

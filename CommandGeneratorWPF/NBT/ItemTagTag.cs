@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-
-using Newtonsoft.Json;
 
 namespace CommandGeneratorWPF.NBT
 {
@@ -16,6 +15,7 @@ namespace CommandGeneratorWPF.NBT
 	public class ItemTagTag : IJsonable
 	{
 		#region components
+
 		[Flags]
 		public enum HideFlagsFormat : byte
 		{
@@ -28,7 +28,7 @@ namespace CommandGeneratorWPF.NBT
 			other = 32
 		};
 
-		enum FireworksStarType : byte
+		private enum FireworksStarType : byte
 		{
 			Small_Ball = 0,
 			Large_Ball = 1,
@@ -52,6 +52,7 @@ namespace CommandGeneratorWPF.NBT
 				id = enchID;
 				lvl = 1;
 			}
+
 			public EnchantmentTag(short enchID, short enchLvl)
 			{
 				id = enchID;
@@ -63,6 +64,7 @@ namespace CommandGeneratorWPF.NBT
 				return EnchantmentFriendlyNames()[id] + " " + Extras.IntToRoman(lvl);
 			}
 		}
+
 		public class DisplayTag
 		{
 			public int? color
@@ -86,10 +88,11 @@ namespace CommandGeneratorWPF.NBT
 			public bool IsDefault()
 			{
 				return (!color.HasValue) &&
-						Name == "" && 
+						Name == "" &&
 						Lore == null;
 			}
 		}
+
 		public class CustomPotionEffectTag
 		{
 			[JsonProperty]
@@ -120,7 +123,8 @@ namespace CommandGeneratorWPF.NBT
 				Ambient = 0;
 				ShowParticles = 1;
 			}
-			public CustomPotionEffectTag(byte id, byte amp, int duration, 
+
+			public CustomPotionEffectTag(byte id, byte amp, int duration,
 				byte ambient, byte showParticles)
 			{
 				Id = id;
@@ -146,6 +150,7 @@ namespace CommandGeneratorWPF.NBT
 				return result;
 			}
 		}
+
 		public class FireworksStarTag
 		{
 			[DefaultValue(0)]
@@ -209,6 +214,7 @@ namespace CommandGeneratorWPF.NBT
 				return result;
 			}
 		}
+
 		public class FireworksRocketTag
 		{
 			[DefaultValue(-25)] //always show this, ranges from -2 to 10 in UI
@@ -225,12 +231,15 @@ namespace CommandGeneratorWPF.NBT
 				Explosions.Add(new FireworksStarTag());
 			}
 		}
-		#endregion
+
+		#endregion components
 
 		#region TagTags
+
 		//General
 		[DefaultValue(0)]
 		public byte Unbreakable;
+
 		public List<string> CanDestroy;
 
 		public List<string> CanPlaceOn;
@@ -254,10 +263,13 @@ namespace CommandGeneratorWPF.NBT
 		//Written Books
 		[DefaultValue(0)]
 		public int generation;
+
 		[DefaultValue("")]
 		public string author;
+
 		[DefaultValue("")]
 		public string title;
+
 		public List<string> pages;
 
 		//Skulls
@@ -270,7 +282,8 @@ namespace CommandGeneratorWPF.NBT
 		//Map
 		public byte? map_is_scaling
 		{ get; set; }
-		#endregion
+
+		#endregion TagTags
 
 		public ItemTagTag()
 		{
@@ -308,10 +321,11 @@ namespace CommandGeneratorWPF.NBT
 			tag.Header = Extras.TextImg("tag:", "doc_compound.png");
 
 			#region general
+
 			if (Unbreakable != 0)
 			{
 				TreeViewItem Unbreakable_ = new TreeViewItem();
-				Unbreakable_.Header = Extras.TextImg("Unbreakable: " + 
+				Unbreakable_.Header = Extras.TextImg("Unbreakable: " +
 					Unbreakable.ToString(), "doc_byte.png");
 				tag.Items.Add(Unbreakable_);
 			}
@@ -343,9 +357,11 @@ namespace CommandGeneratorWPF.NBT
 				CanPlaceOn_.IsExpanded = true;
 				tag.Items.Add(CanPlaceOn_);
 			}
-			#endregion
+
+			#endregion general
 
 			#region display
+
 			if (display != null)
 			{
 				TreeViewItem display_ = new TreeViewItem();
@@ -354,7 +370,7 @@ namespace CommandGeneratorWPF.NBT
 				if (display.color.HasValue)
 				{
 					TreeViewItem color = new TreeViewItem();
-					color.Header = Extras.TextImg("color: " + display.color.ToString(), 
+					color.Header = Extras.TextImg("color: " + display.color.ToString(),
 						"doc_int.png");
 					display_.Items.Add(color);
 				}
@@ -362,7 +378,7 @@ namespace CommandGeneratorWPF.NBT
 				if (display.Name != "")
 				{
 					TreeViewItem name = new TreeViewItem();
-					name.Header = Extras.TextImg("name: " + display.Name, 
+					name.Header = Extras.TextImg("name: " + display.Name,
 						"doc_string.png");
 					display_.Items.Add(name);
 				}
@@ -385,9 +401,11 @@ namespace CommandGeneratorWPF.NBT
 				display_.IsExpanded = true;
 				tag.Items.Add(display_);
 			}
-			#endregion
+
+			#endregion display
 
 			#region ench
+
 			if (ench != null)
 			{
 				TreeViewItem ench_ = new TreeViewItem();
@@ -399,11 +417,11 @@ namespace CommandGeneratorWPF.NBT
 					e.Header = Extras.TextImg("", "doc_compound.png");
 
 					TreeViewItem id = new TreeViewItem();
-					id.Header = Extras.TextImg("id: " + t.id.ToString(), 
+					id.Header = Extras.TextImg("id: " + t.id.ToString(),
 						"doc_short.png");
 					e.Items.Add(id);
 					TreeViewItem lvl = new TreeViewItem();
-					lvl.Header = Extras.TextImg("lvl: " + t.lvl.ToString(), 
+					lvl.Header = Extras.TextImg("lvl: " + t.lvl.ToString(),
 						"doc_short.png");
 					e.Items.Add(lvl);
 
@@ -417,7 +435,7 @@ namespace CommandGeneratorWPF.NBT
 			if (storedEnch != null)
 			{
 				TreeViewItem storedEnch_ = new TreeViewItem();
-				storedEnch_.Header = Extras.TextImg("storedEnch:", 
+				storedEnch_.Header = Extras.TextImg("storedEnch:",
 					"doc_list.png");
 
 				foreach (EnchantmentTag t in storedEnch)
@@ -426,11 +444,11 @@ namespace CommandGeneratorWPF.NBT
 					e.Header = Extras.TextImg("", "doc_compound.png");
 
 					TreeViewItem id = new TreeViewItem();
-					id.Header = Extras.TextImg("id: " + t.id.ToString(), 
+					id.Header = Extras.TextImg("id: " + t.id.ToString(),
 						"doc_short.png");
 					e.Items.Add(id);
 					TreeViewItem lvl = new TreeViewItem();
-					lvl.Header = Extras.TextImg("lvl: " + t.lvl.ToString(), 
+					lvl.Header = Extras.TextImg("lvl: " + t.lvl.ToString(),
 						"doc_short.png");
 					e.Items.Add(lvl);
 
@@ -448,13 +466,15 @@ namespace CommandGeneratorWPF.NBT
 					RepairCost.ToString(), "doc_int.png");
 				tag.Items.Add(repair);
 			}
-			#endregion
+
+			#endregion ench
 
 			#region potion
+
 			if (CustomPotionEffects != null)
 			{
 				TreeViewItem potion = new TreeViewItem();
-				potion.Header = Extras.TextImg("CustomPotionEffects:", 
+				potion.Header = Extras.TextImg("CustomPotionEffects:",
 					"doc_list.png");
 
 				foreach (CustomPotionEffectTag p in CustomPotionEffects)
@@ -463,31 +483,31 @@ namespace CommandGeneratorWPF.NBT
 					effect.Header = Extras.TextImg("", "doc_compound.png");
 
 					TreeViewItem id = new TreeViewItem();
-					id.Header = Extras.TextImg("Id: " + 
+					id.Header = Extras.TextImg("Id: " +
 						p.Id.ToString(), "doc_byte.png");
 					effect.Items.Add(id);
 
 					TreeViewItem str = new TreeViewItem();
-					str.Header = Extras.TextImg("Amplifier: " + 
+					str.Header = Extras.TextImg("Amplifier: " +
 						p.Amplifier.ToString(), "doc_byte.png");
 					effect.Items.Add(str);
 
 					TreeViewItem dur = new TreeViewItem();
-					dur.Header = Extras.TextImg("Duration: " + 
+					dur.Header = Extras.TextImg("Duration: " +
 						p.Duration.ToString(), "doc_int.png");
 					effect.Items.Add(dur);
 
 					if (p.Ambient != 0)
 					{
 						TreeViewItem amb = new TreeViewItem();
-						amb.Header = Extras.TextImg("Ambient: " + 
+						amb.Header = Extras.TextImg("Ambient: " +
 							p.Ambient.ToString(), "doc_byte.png");
 						effect.Items.Add(amb);
 					}
 					if (p.ShowParticles == 0)
 					{
 						TreeViewItem part = new TreeViewItem();
-						part.Header = Extras.TextImg("ShowParticles: " + 
+						part.Header = Extras.TextImg("ShowParticles: " +
 							p.ShowParticles.ToString(), "doc_byte.png");
 						effect.Items.Add(part);
 					}
@@ -499,13 +519,15 @@ namespace CommandGeneratorWPF.NBT
 				potion.IsExpanded = true;
 				tag.Items.Add(potion);
 			}
-			#endregion
+
+			#endregion potion
 
 			#region book
+
 			if (title != "")
 			{
 				TreeViewItem title_ = new TreeViewItem();
-				title_.Header = Extras.TextImg("title: " + title, 
+				title_.Header = Extras.TextImg("title: " + title,
 					"doc_string.png");
 				tag.Items.Add(title_);
 			}
@@ -513,7 +535,7 @@ namespace CommandGeneratorWPF.NBT
 			if (author != "")
 			{
 				TreeViewItem author_ = new TreeViewItem();
-				author_.Header = Extras.TextImg("author: " + author, 
+				author_.Header = Extras.TextImg("author: " + author,
 					"doc_string.png");
 				tag.Items.Add(author_);
 			}
@@ -521,7 +543,7 @@ namespace CommandGeneratorWPF.NBT
 			if (generation != 0)
 			{
 				TreeViewItem gen = new TreeViewItem();
-				gen.Header = Extras.TextImg("generation: " + 
+				gen.Header = Extras.TextImg("generation: " +
 					generation.ToString(), "doc_int.png");
 				tag.Items.Add(gen);
 			}
@@ -550,9 +572,11 @@ namespace CommandGeneratorWPF.NBT
 					tag.Items.Add(pages_);
 				}
 			}
-			#endregion
+
+			#endregion book
 
 			#region FwStar
+
 			if (Explosion != null)
 			{
 				TreeViewItem expl = new TreeViewItem();
@@ -561,7 +585,7 @@ namespace CommandGeneratorWPF.NBT
 				if (Explosion.Flicker != 0)
 				{
 					TreeViewItem fl = new TreeViewItem();
-					fl.Header = Extras.TextImg("Flicker: " + 
+					fl.Header = Extras.TextImg("Flicker: " +
 						Explosion.Flicker.ToString(), "doc_byte.png");
 					expl.Items.Add(fl);
 				}
@@ -575,7 +599,7 @@ namespace CommandGeneratorWPF.NBT
 				}
 
 				TreeViewItem ty = new TreeViewItem();
-				ty.Header = Extras.TextImg("Type: " + Explosion.Type.ToString(), 
+				ty.Header = Extras.TextImg("Type: " + Explosion.Type.ToString(),
 					"doc_byte.png");
 				expl.Items.Add(ty);
 
@@ -614,9 +638,11 @@ namespace CommandGeneratorWPF.NBT
 				expl.IsExpanded = true;
 				tag.Items.Add(expl);
 			}
-			#endregion
+
+			#endregion FwStar
 
 			#region FwRocket
+
 			if (Fireworks != null)
 			{
 				TreeViewItem fw = new TreeViewItem();
@@ -699,9 +725,11 @@ namespace CommandGeneratorWPF.NBT
 				fw.IsExpanded = true;
 				tag.Items.Add(fw);
 			}
-			#endregion
+
+			#endregion FwRocket
 
 			#region other
+
 			if (SkullOwner != "")
 			{
 				TreeViewItem skull = new TreeViewItem();
@@ -714,10 +742,11 @@ namespace CommandGeneratorWPF.NBT
 			{
 				TreeViewItem map = new TreeViewItem();
 				map.Header = Extras.TextImg("Map_is_scaling: "
-					+ map_is_scaling.ToString(),"doc_byte.png");
+					+ map_is_scaling.ToString(), "doc_byte.png");
 				tag.Items.Add(map);
 			}
-			#endregion
+
+			#endregion other
 
 			tag.IsExpanded = true;
 			return tag;
@@ -733,7 +762,7 @@ namespace CommandGeneratorWPF.NBT
 			return (ToJSON() == "{}" || ToJSON() == "");
 		}
 
-		public static List<EnchantmentTag> 
+		public static List<EnchantmentTag>
 			AvailableEnchantments(EnchantmentType type)
 		{
 			List<EnchantmentTag> e = new List<EnchantmentTag>();
@@ -742,6 +771,7 @@ namespace CommandGeneratorWPF.NBT
 			{
 			case EnchantmentType.None:
 				break;
+
 			case EnchantmentType.Sword:
 				for (short i = 16; i <= 21; i++)
 				{
@@ -749,6 +779,7 @@ namespace CommandGeneratorWPF.NBT
 				}
 				e.Add(new EnchantmentTag(34));
 				break;
+
 			case EnchantmentType.Bow:
 				e.Add(new EnchantmentTag(34));
 				for (short i = 48; i <= 51; i++)
@@ -756,12 +787,14 @@ namespace CommandGeneratorWPF.NBT
 					e.Add(new EnchantmentTag(i));
 				}
 				break;
+
 			case EnchantmentType.PickShovel:
 				e.Add(new EnchantmentTag(32));
 				e.Add(new EnchantmentTag(33));
 				e.Add(new EnchantmentTag(34));
 				e.Add(new EnchantmentTag(35));
 				break;
+
 			case EnchantmentType.Axe:
 				e.Add(new EnchantmentTag(32));
 				e.Add(new EnchantmentTag(33));
@@ -771,6 +804,7 @@ namespace CommandGeneratorWPF.NBT
 				e.Add(new EnchantmentTag(17));
 				e.Add(new EnchantmentTag(18));
 				break;
+
 			case EnchantmentType.Armor:
 				e.Add(new EnchantmentTag(0));
 				e.Add(new EnchantmentTag(1));
@@ -779,6 +813,7 @@ namespace CommandGeneratorWPF.NBT
 				e.Add(new EnchantmentTag(7));
 				e.Add(new EnchantmentTag(34));
 				break;
+
 			case EnchantmentType.Helmet:
 				e.Add(new EnchantmentTag(0));
 				e.Add(new EnchantmentTag(1));
@@ -789,6 +824,7 @@ namespace CommandGeneratorWPF.NBT
 				e.Add(new EnchantmentTag(7));
 				e.Add(new EnchantmentTag(34));
 				break;
+
 			case EnchantmentType.Boots:
 				e.Add(new EnchantmentTag(0));
 				e.Add(new EnchantmentTag(1));
@@ -798,19 +834,23 @@ namespace CommandGeneratorWPF.NBT
 				e.Add(new EnchantmentTag(7));
 				e.Add(new EnchantmentTag(34));
 				break;
+
 			case EnchantmentType.Rod:
 				e.Add(new EnchantmentTag(61));
 				e.Add(new EnchantmentTag(62));
 				e.Add(new EnchantmentTag(34));
 				break;
+
 			case EnchantmentType.DurableOnly:
 				e.Add(new EnchantmentTag(34));
 				break;
+
 			case EnchantmentType.Shears:
 				e.Add(new EnchantmentTag(32));
 				e.Add(new EnchantmentTag(33));
 				e.Add(new EnchantmentTag(34));
 				break;
+
 			case EnchantmentType.All:
 				for (short i = 0; i <= 7; i++)
 				{
@@ -831,12 +871,14 @@ namespace CommandGeneratorWPF.NBT
 				e.Add(new EnchantmentTag(61));
 				e.Add(new EnchantmentTag(62));
 				break;
+
 			default:
 				break;
 			}
 
 			return e;
 		}
+
 		public static Dictionary<int, string> EnchantmentFriendlyNames()
 		{
 			Dictionary<int, string> e = new Dictionary<int, string>();
@@ -887,17 +929,19 @@ namespace CommandGeneratorWPF.NBT
 
 			return e;
 		}
+
 		public static List<byte> AllPotionEffects()
 		{
 			List<byte> e = new List<byte>();
 
-			for (byte i = 1; i <= 23; i++ )
+			for (byte i = 1; i <= 23; i++)
 			{
 				e.Add(i);
 			}
 
 			return e;
 		}
+
 		public static Dictionary<byte, string> PotionEffectFriendlyNames()
 		{
 			Dictionary<byte, string> e = new Dictionary<byte, string>();
@@ -928,6 +972,7 @@ namespace CommandGeneratorWPF.NBT
 
 			return e;
 		}
+
 		public static Dictionary<byte, string> PotionDamageFriendlyNames()
 		{
 			Dictionary<byte, string> e = new Dictionary<byte, string>();
